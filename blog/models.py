@@ -237,7 +237,7 @@ class Post(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     category = models.ManyToManyField(Category, related_name="posts")
-    image = models.ImageField(default='lll.gif/', upload_to='post_pics/', null=True, blank=True, validators=[media_size])
+    image = models.ImageField(default='jes_vcjwrw.jpg', upload_to='post_pics/', null=True, blank=True, validators=[media_size])
     video = models.FileField(upload_to='post_pics/', null=True, blank=True, validators=[media_size], storage=VideoMediaCloudinaryStorage)
 
     class Meta:
