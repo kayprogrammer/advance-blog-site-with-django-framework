@@ -93,7 +93,7 @@ class Author(models.Model):
     slug = models.SlugField(max_length=250, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
-    avatar = models.ImageField(default='pro.png', upload_to='avatars/', null=True, blank=True, validators=[avatar_size])
+    avatar = models.ImageField(default='pro_lrubcc.png', upload_to='avatars/', null=True, blank=True, validators=[avatar_size])
     favourite_quote = models.TextField(max_length=1000, null=True, blank=True)
     favourite_scripture = models.TextField(max_length=1000, null=True, blank=True)
     place_of_worship = models.TextField(max_length=1000, null=True, blank=True)
