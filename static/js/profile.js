@@ -36,6 +36,9 @@ $(document).ready(function() {
           contentType: false,
           processData: false,
           cache: false,
+          beforeSend: function(){
+            $('.clearfix').show()
+          },
           success: function (data) {
             
             if (data.form_is_valid) {
