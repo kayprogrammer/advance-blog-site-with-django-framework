@@ -1,0 +1,63 @@
+{% extends 'blog/index.html' %}
+{% block title %} | Flagged Replies{% endblock %}
+{% block content %}
+
+<div class="col-md-13">
+    <div class="row">
+        <div class="col"><h5>TOTAL({{f_rep.count}})</h5></div>
+        <div class="col "><a style="float: right;" href="{% url 'comments' %}#replies"><i class="fas fa-arrow-left"></i> Back</a></div>
+    </div>
+    <hr>
+    <div class="card card-body">
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <tr>
+                    <th>COMMENT</th>
+                    <th>REPLIER</th>
+                    <th>REPLY</th>
+                    <th>FLAGGED COUNT</th>
+                    <th>DELETE</th>
+                </tr>
+
+                {% for r in f_rep %}
+                    <tr>
+                        <td><a href="
+                            {% if r.comment.article %}
+                            {% url 'post_detail' r.comment.article.id r.comment.article.slug %}#comment-{{r.comment.id}}
+                            {% elif r.comment.question %}
+                            {% url 'question_detail' r.comment.question.id r.comment.question.slug %}#comment-{{r.comment.id}}
+                            {% elif r.comment.news %}
+                            {% url 'news_detail' r.comment.news.slug %}#comment-{{r.comment.id}}
+                            {% endif %}
+                            ">{{r.comment|truncatechars:"20"}}</a></td>
+                        {% if r.author != None %}
+                        <td>{{r.author}}</td>
+                        {% else %}
+                            {% if r.name != None %}
+                            <td>{{r.name}}</td>
+                            {% else %}
+                            <td>Inactive User</td>
+                            {% endif %}
+                        {% endif %}
+                        <td><a href="
+                            {% if r.comment.article %}
+                            {% url 'post_detail' r.comment.article.id r.comment.article.slug %}#replied-comments-{{r.comment.id}}
+                            {% elif r.comment.question %}
+                            {% url 'question_detail' r.comment.question.id r.comment.question.slug %}#replied-comments-{{r.comment.id}}
+                            {% elif r.comment.news %}
+                            {% url 'news_detail' r.comment.news.slug %}#replied-comments-{{r.comment.id}}
+                            {% endif %}
+                            ">{{r.reply|truncatechars:"20"}}</a></td>
+                        <td>{{r.flagged.count}}</td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'del_flreply' r.id %}">Delete</a></td>
+                    </tr>
+                {% empty %}
+                    <tr>No Flagged Replies Yet!</tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

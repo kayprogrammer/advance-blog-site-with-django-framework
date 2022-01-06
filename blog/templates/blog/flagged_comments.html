@@ -1,0 +1,63 @@
+{% extends 'blog/index.html' %}
+{% block title %} | Flagged Comments{% endblock %}
+{% block content %}
+
+<div class="col-md-13">
+    <div class="row">
+        <div class="col"><h5>TOTAL({{f_comm.count}})</h5></div>
+        <div class="col "><a style="float: right;" href="{% url 'comments' %}"><i class="fas fa-arrow-left"></i> Back</a></div>
+    </div>
+    <hr>
+    <div class="card card-body">
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <tr>
+                    <th>ARTICLE/QUESTIONS/NEWS</th>
+                    <th>COMMENTER</th>
+                    <th>COMMENT</th>
+                    <th>FLAGGED COUNT</th>
+                    <th>DELETE</th>
+                </tr>
+
+                {% for c in f_comm %}
+                    <tr>
+                        {% if c.article != None %}
+                        <td><a href="{% url 'post_detail' c.article.id c.article.slug %}">{{c.article|truncatechars:"20" }}</a></td>
+                        {% else %}
+                            {% if c.question != None %}
+                            <td><a href="{% url 'question_detail' c.question.id c.question.slug %}">{{c.question|truncatechars:"20" }}</a></td>
+                            {% else %}
+                            <td><a href="{% url 'news_detail' c.news.slug %}">{{c.news|truncatechars:"20" }}</a></td>
+                            {% endif %}
+                        {% endif %}
+                        {% if c.author != None %}
+                        <td>{{c.author}}</td>
+                        {% else %}
+                            {% if c.name != None %}
+                            <td>{{c.name}}</td>
+                            {% else %}
+                            <td>Inactive User</td>
+                            {% endif %}
+                        {% endif %}
+                        <td><a href="
+                            {% if c.article %}
+                            {% url 'post_detail' c.article.id c.article.slug %}#comment-{{c.id}}
+                            {% elif c.question %}
+                            {% url 'question_detail' c.question.id c.question.slug %}#comment-{{c.id}}
+                            {% elif c.news %}
+                            {% url 'news_detail' c.news.slug %}#comment-{{c.id}}
+                            {% endif %}
+                            ">{{c.comment|truncatechars:"20"}}</a></td>
+                        <td>{{c.flagged.count}}</td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'del_flcomment' c.id %}">Delete</a></td>
+                    </tr>
+                {% empty %}
+                <tr>No Flagged Comments Yet!</tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

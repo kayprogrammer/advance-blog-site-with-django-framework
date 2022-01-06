@@ -1,0 +1,90 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% block title %} | News & Info{% endblock %}
+{% block content %}
+    <style>
+        .card, .card-img, .card-img-overlay{
+            width: 35em;
+            max-width: 100%;
+            margin-right: 2em;
+            object-fit: cover;
+            
+        }
+
+        .card-vid{
+            width: 35em;
+            max-width: 100%;
+            margin-right: 2em;
+            height: 24.75em !important;
+            object-fit: cover;
+            max-height: 100%;
+        }
+    </style>
+
+    {% if user.is_staff %}
+        <button id="btn" type="button" class="btn btn-secondary js-create-news mb-3" data-url="{% url 'create_news' %}">
+            <i class="fas fa-plus"></i>
+        New Info</button>
+
+    {% endif %}
+
+    <p style="font-weight: bolder;">Click any of the images/flyers below to see full details</p>
+    <div class="row" id="news-table">
+        {% include 'blog/news_list.html' %}
+    </div>
+    <div class="modal fade" id="modal-news">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content"></div>
+        </div>
+    </div>
+
+    <div class="row tm-row tm-mt-100 tm-mb-75">
+        {% if is_paginated %}
+        <div class="tm-prev-next-wrapper">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" id="prev" class="mb-2 tm-btn tm-btn-primary tm-prev-next ">Prev</a>
+            {% endif %}
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="mb-2 tm-btn tm-btn-primary tm-prev-next">Next</a>
+            {% endif %}
+        </div>
+        <div class="tm-paging-wrapper">
+            <nav class="tm-paging-nav d-inline-block">
+                <ul>
+                    {% if page_obj.has_previous %}
+                        <li class="tm-paging-item">
+                            <a href="?page=1" id="first" class="mb-2 tm-btn tm-paging-link first-last">First</a>
+                        </li>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="tm-paging-item {% if num == num %}active{% endif %}">
+                                <a href="?page={{num}}" class="mb-2 tm-btn tm-paging-link">{{num}}</a>
+                            </li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="tm-paging-item ">
+                                <a href="?page={{num}}" class="mb-2 tm-btn tm-paging-link">{{num}}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+
+                        <li class="tm-paging-item">
+                            <a href="?page={{page_obj.paginator.num_pages}}" class="mb-2 tm-btn tm-paging-link first-last">Last</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>    
+        {% endif %}            
+    </div> 
+    
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        var url = "{% static 'js/news.js' %}";
+        $.getScript(url);
+    </script>
+{% endblock %}

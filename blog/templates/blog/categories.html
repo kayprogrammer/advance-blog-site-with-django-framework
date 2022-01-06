@@ -1,0 +1,42 @@
+{% extends 'blog/index.html' %}
+
+{% load static %}
+{% block title %} | Categories{% endblock %}
+{% block content %}
+
+    <style>
+        @media(max-width:330px){
+            .text{
+                font-size: 15px;
+            }
+            .card{
+                max-width: 100%;
+            }
+        }
+    </style>
+
+    <div class="card-group">
+        <div class="card mb-3" style="width: 18rem;">
+            <div class="card-header" style="background-color:#76b852;">
+                Article Categories
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for c in categories %}
+                    <li class="list-group-item"><a class="text" href="{% url 'category_posts' c.slug %}">{{c.name}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>    
+
+        <div class="card mb-3" style="width: 18rem;">
+            <div class="card-header" style="background-color:#76b852;">
+                Question Categories
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for c in categories %}
+                    <li class="list-group-item"><a href="{% url 'category_questions' c.slug %}">{{c.name}}</a></li>
+                {% endfor %}
+            </ul>
+        </div> 
+    </div>  
+
+{% endblock %}

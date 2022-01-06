@@ -1,0 +1,50 @@
+<div class="col-12">
+    <form method="GET" class="form-inline tm-mb-80 tm-search-form">
+        {% csrf_token %}
+        {{form.q}}
+
+        <ul class="dropdown-menu col-12 pl-2 search-dd" role="menu" aria-labelledby="menu">
+            <li class="head text-light">
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-12">
+                        <span id="hd" class="not-head">Categories Shortcut</span>
+                    </div>
+                </div>
+            </li>
+            <li class="search-query-box" style=" border-left:5px solid #76b852; border-right:5px solid #76b852; max-height: 16em; overflow: auto;">
+                <ul class="search-list" style="list-style-type: none;" id="list">
+                    <div class="row">
+                        <div class="col" style="border-right:5px solid #76b852;">
+                            <div align="center" style="border-bottom: 3px solid #78b852; margin-bottom: 10px;">
+                                <span style="color: black; font-weight: bold;">Articles</span>
+                            </div>
+                            {% for c in categories %}
+                                <li class="cat-name" role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'category_posts' c.slug %}">{{c.name}}</a></li>
+                                <div class="dropdown-divider"></div>
+                            {% endfor %}
+                        </div>
+                        <div class="col">
+                            <div align="center" style="border-bottom: 3px solid #78b852; margin-bottom: 10px;">
+                                <span style="color: black; font-weight: bold;">Questions</span>
+                            </div>
+                            {% for c in categories %}
+                                <li class="cat-name" role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'category_questions' c.slug %}">{{c.name}}</a></li>
+                                <div class="dropdown-divider"></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </ul>
+            </li>
+        
+            <li class="footer text-center">
+                <a class="text-light">I am blessed</a>
+            </li>
+        </ul>
+        
+        <span class="tm-search-button " style="display: table; cursor: pointer;" type="click">
+            <i style="display: table-cell; vertical-align: middle; text-align: center;" class="fas fa-search tm-search-icon" aria-hidden="true"></i>
+        </span>
+
+    </form>
+</div>
+</div>

@@ -1,0 +1,46 @@
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load static %}
+    <!-- Main CSS-->
+    <link href="{% static 'css/form.css' %}?{% now "U" %}" rel="stylesheet" media="all">
+
+
+    <div class="card-body">
+        <div class="form-row">
+            <div class="name">Title</div>
+            <div class="value">
+                {% render_field form.title class+="input--style-6" placeholder="Enter your question title..." %}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="name">Text</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.text}}
+                    {{form.media}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Category</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.category|as_crispy_field}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--
+    <script type="text/javascript">
+        var url = "{% static 'ckeditor/ckeditor-init.js' %}"
+        $.getScript(url);
+       
+    </script>
+    <script type="text/javascript">
+        var url = "{% static 'ckeditor/ckeditor/ckeditor.js' %}"
+        $.getScript(url);
+       
+    </script>
+    -->

@@ -1,0 +1,33 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% block title %} | Admins{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/admins.css' %}?{% now "U" %}">
+    <div class="card-group ">
+        {% for a in admins %}
+        <div class="col-md-4 ">
+            <div class="card text-center" style="width:16rem; margin-right: 1em; object-fit: cover;">
+                <img class="card-img-top" id="admin-ava-{{forloop.counter}}" style="cursor: pointer; object-fit: cover; object-position: top;" src="{{a.avatarURL}}" alt="Card image" height="250" width="250">
+                <div class="card-body">
+                <h4 class="card-title">{{a.full_name}}</h4>
+                <a href="{% url 'admin' a.slug %}" class="btn btn-primary btn-sm view-button" >View Profile</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>   
+    
+{% block javascript %}
+    {% for a in admins %}
+        <script>
+            $('#admin-ava-{{forloop.counter}}').click(function(){
+                Swal.fire({
+                    title:'{{a.full_name}}',
+                    imageUrl:"{{a.avatarURL}}",
+                });
+            })
+        </script>
+    {% endfor %}
+{% endblock %}
+
+{% endblock %}

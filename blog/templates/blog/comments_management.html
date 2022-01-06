@@ -1,0 +1,134 @@
+{% extends 'blog/index.html' %}
+{% block title %} | Comments{% endblock %}
+{% block content %}
+
+<div class="col-md-13">
+    <div class="row d-flex">
+        <div class="col"><h6>COMMENTS({{com.count}})</h6></div>
+        <div class="col"><a style="float: right;" href="{% url 'fl_comments' %}">Flagged Comments</a></div>
+    </div>
+    <hr>
+    <div class="card card-body">
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <tr>
+                    <th>ARTICLE/QUESTIONS/NEWS</th>
+                    <th>COMMENTER</th>
+                    <th>COMMENT</th>
+                    <th>FLAGGED</th>
+                    <th>DELETE</th>
+                </tr>
+
+                {% for c in comments %}
+                    <tr>
+                        {% if c.article != None %}
+                        <td><a href="{% url 'post_detail' c.article.id c.article.slug %}">{{c.article|truncatechars:"20" }}</a></td>
+                        {% else %}
+                            {% if c.question != None %}
+                            <td><a href="{% url 'question_detail' c.question.id c.question.slug %}">{{c.question|truncatechars:"20" }}</a></td>
+                            {% else %}
+                            <td><a href="{% url 'news_detail' c.news.slug %}">{{c.news|truncatechars:"20" }}</a></td>
+                            {% endif %}
+                        {% endif %}
+                        {% if c.author != None %}
+                        <td>{{c.author}}</td>
+                        {% else %}
+                            {% if c.name != None %}
+                            <td>{{c.name}}</td>
+                            {% else %}
+                            <td>Inactive User</td>
+                            {% endif %}
+                        {% endif %}
+                        <td><a href="
+                            {% if c.article %}
+                            {% url 'post_detail' c.article.id c.article.slug %}#comment-{{c.id}}
+                            {% elif c.question %}
+                            {% url 'question_detail' c.question.id c.question.slug %}#comment-{{c.id}}
+                            {% elif c.news %}
+                            {% url 'news_detail' c.news.slug %}#comment-{{c.id}}
+                            {% endif %}
+                            ">{{c.comment|truncatechars:"20"}}</a></td>
+                        <td>
+                            {% if c.flagged.count != 0 %}
+                            <p style="color: red; font-weight: bold;">True({{c.flagged.count}})</p>
+                            {% else %}
+                            <p style="color: blue; font-weight: bold;">False</p>
+                            {% endif %}
+                        </td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'del_comment' c.id %}">Delete</a></td>
+                    </tr>
+                {% empty %}
+                    <tr>No Comments Yet!</tr>
+                {% endfor %}
+
+            </table>
+            <a href="{% url 'full_comments' %}">View All Comments</a>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-13" id="replies" style="margin-top: 5em;">
+    <div class="row d-flex">
+        <div class="col"><h6>Replies({{rep.count}})</h6></div>
+        <div class="col"><a style="float: right;" href="{% url 'fl_replies' %}">Flagged Replies</a></div>
+    </div>
+    <hr>
+    <div class="card card-body">
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <tr>
+                    <th>COMMENT</th>
+                    <th>REPLIER</th>
+                    <th>REPLY</th>
+                    <th>FLAGGED</th>
+                    <th>DELETE</th>
+                </tr>
+
+                {% for r in replies %}
+                    <tr>
+                        <td><a href="
+                            {% if r.comment.article %}
+                            {% url 'post_detail' r.comment.article.id r.comment.article.slug %}#comment-{{r.comment.id}}
+                            {% elif r.comment.question %}
+                            {% url 'question_detail' r.comment.question.id r.comment.question.slug %}#comment-{{r.comment.id}}
+                            {% elif r.comment.news %}
+                            {% url 'news_detail' r.comment.news.slug %}#comment-{{r.comment.id}}
+                            {% endif %}
+                            ">{{r.comment|truncatechars:"20"}}</a></td>
+                        {% if r.author != None %}
+                        <td>{{r.author}}</td>
+                        {% else %}
+                            {% if r.name != None %}
+                            <td>{{r.name}}</td>
+                            {% else %}
+                            <td>Inactive User</td>
+                            {% endif %}
+                        {% endif %}
+                        <td><a href="
+                            {% if r.comment.article %}
+                            {% url 'post_detail' r.comment.article.id r.comment.article.slug %}#replied-comments-{{r.comment.id}}
+                            {% elif r.comment.question %}
+                            {% url 'question_detail' r.comment.question.id r.comment.question.slug %}#replied-comments-{{r.comment.id}}
+                            {% elif r.comment.news %}
+                            {% url 'news_detail' r.comment.news.slug %}#replied-comments-{{r.comment.id}}
+                            {% endif %}
+                            ">{{r.reply|truncatechars:"20"}}</a></td>
+                        <td>
+                            {% if r.flagged.count != 0 %}
+                            <p style="color: red; font-weight: bold;">True({{r.flagged.count}})</p>
+                            {% else %}
+                            <p style="color: blue; font-weight: bold;">False</p>
+                            {% endif %}
+                        </td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'del_reply' r.id %}">Delete</a></td>
+                    </tr>
+                {% empty %}
+                    <tr>No Replies Yet!</tr>
+                {% endfor %}
+
+            </table>
+            <a href="{% url 'full_replies' %}">View All Replies</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

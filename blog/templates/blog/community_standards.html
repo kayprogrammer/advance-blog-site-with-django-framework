@@ -1,0 +1,27 @@
+{% extends 'blog/index.html' %}
+
+{% load static %}
+{% block title %} | Community Standards{% endblock %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/profile.css' %}?{% now "U" %}">
+
+<div class="row">
+
+<div class="card" style="width: 60rem; height: auto;">
+    
+    <div class="card-body bs-callout">
+     <h1 class="add" style="font-size: 30px; color: #76b852;">Community Standards</h1>
+     {% for c in community_standards %}
+      <div class="bs-callout bs-callout-danger">
+        <h4 style="font-size: 20px;">{{c.title}}</h4>
+        <p style="line-height: 20px; font-size: 15px;">{{c.text|safe}}</p>
+      </div>
+     {% endfor %}
+    </div>
+    <div class="footer"></div>
+</div>
+
+</div>
+
+{% endblock %}

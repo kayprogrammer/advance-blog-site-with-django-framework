@@ -1,0 +1,54 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% block title %} | Category Questions{% endblock %}
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/community.css' %}?{% now "U" %}">
+
+    <div class="row">
+        {% include 'blog/partial_question_list.html' %}
+    </div>
+
+
+    <div class="row tm-row tm-mt-100 tm-mb-75">
+        {% if is_paginated %}
+        <div class="tm-prev-next-wrapper">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" id="prev" class="mb-2 tm-btn tm-btn-primary tm-prev-next ">Prev</a>
+            {% endif %}
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="mb-2 tm-btn tm-btn-primary tm-prev-next">Next</a>
+            {% endif %}
+        </div>
+        <div class="tm-paging-wrapper">
+            <nav class="tm-paging-nav d-inline-block">
+                <ul>
+                    {% if page_obj.has_previous %}
+                        <li class="tm-paging-item">
+                            <a href="?page=1" id="first" class="mb-2 tm-btn tm-paging-link first-last">First</a>
+                        </li>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="tm-paging-item {% if num == num %}active{% endif %}">
+                                <a href="?page={{num}}" class="mb-2 tm-btn tm-paging-link">{{num}}</a>
+                            </li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="tm-paging-item ">
+                                <a href="?page={{num}}" class="mb-2 tm-btn tm-paging-link">{{num}}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+
+                        <li class="tm-paging-item">
+                            <a href="?page={{page_obj.paginator.num_pages}}" class="mb-2 tm-btn tm-paging-link first-last">Last</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>    
+        {% endif %}            
+    </div> 
+
+{% endblock %}

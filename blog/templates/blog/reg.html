@@ -1,0 +1,94 @@
+{% load static %}
+<!--
+Author: Colorlib
+Author URL: https://colorlib.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hopteens Blog | Register</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link href="{% static 'css/reg.css' %}?{% now "U" %}" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css">
+<!-- //Custom Theme files -->
+<!-- web font -->
+<link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
+<!-- //web font -->
+</head>
+<body>
+	<!-- main -->
+	<div class="main-w3layouts wrapper">
+		<h1 style="font-weight: bold;">REGISTER ACCOUNT</h1>
+		<div class="main-agileinfo">
+			<div class="agileits-top">
+				<form action="" method="post">
+					{% csrf_token %}
+					<div class="text" style="margin-bottom: 1.4em">
+						{{form.full_name|capfirst}}
+						<div class="errors">{{form.errors.full_name.as_text}}</div>
+					</div>
+					
+					<div class="text email" style="margin-bottom: 1.4em">
+						{{form.email}}
+						<div class="errors">{{form.errors.email.as_text}}</div>
+
+					</div>
+
+					<div class="text" style="margin-bottom: 1.4em">
+						{{form.phone}}
+						<div class="errors">{{form.errors.phone.as_text}}</div>
+
+					</div>
+
+					<div class="text" style="margin-bottom: 1.4em">
+						{{form.password1}}
+					</div>
+					<div class="text w31pass" style="margin-bottom: 1.4em">
+						{{form.password2}}
+						<div class="errors">{{form.errors.password2.as_text}}</div>
+
+					</div>
+
+					<div class="wthree-text">
+						<label class="anim">
+							{{form.terms_confirmed}}
+							<span>I Agree To The <a style="color: lightblue;" href="{% url 'terms' %}">Terms & Conditions</a></span>
+						</label>
+						<div class="clear"> </div>
+					</div>
+					<input type="submit" value="SIGNUP">
+				</form>
+				<p>Already have an Account? <a href="{% url 'login' %}"> Login Now!</a></p>
+			</div>
+		</div>
+		<!-- copyright -->
+		<div class="colorlibcopy-agile">
+			<p>© {% now "Y" %} HopTeens Blog. All rights reserved | Design by <a href="https://colorlib.com/" target="_blank">Colorlib</a></p>
+		</div>
+		<!-- //copyright -->
+		<ul class="colorlib-bubbles">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<!-- //main -->
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
+
+	{% load sweetify %}
+	{% sweetify %}
+</body>
+</html>

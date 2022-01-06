@@ -1,0 +1,170 @@
+{% extends 'blog/index.html' %}
+
+{% load static %}
+{% block title %} | Article{% endblock %}
+{% block content %}
+{% load social_share %}
+
+<div class="fonn">
+    <div class="row tm-row">
+        <div class="col-12">
+            <hr class="tm-hr-primary tm-mb-55">
+            {% if post.image.url != None %}
+            <a href="{{post.image.url}}"><img width="954" height="535" class="tm-mb-40 bigimg"
+            src="{{post.image.url}}"></a>
+            {% else %}
+                {% if post.video.url != None %}
+                <!-- Video player 1422x800 -->
+
+                <video height="535" controls autoplay class="tm-mb-40"
+                    style="width:100% ! important; height:auto ! important; object-fit:cover; max-height:34rem ;">
+                    <source src="{{post.video.url}}">
+                    Your browser does not support the video tag.
+                </video>
+                {% else %}
+                <a href="{% static 'media/lll.jpg' %}"><img width="954" height="535" class="tm-mb-40 bigimg"
+                    src="{% static 'media/lll.jpg' %}"></a>
+                {% endif %}
+            {% endif %}
+            {% if post.author.user == user %}
+                <button class="tm-delete-btn btn btn-danger btn-sm js-delete-post" data-url="{% url 'delete_post' post.id %}" type="button">Delete</button>
+            {% endif %}
+            <div class="modal fade" id="modal-post">
+                <div class="modal-dialog">
+                    <div class="modal-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row tm-row">
+        <div class="col-lg-8 tm-post-col">
+            <div class="tm-post-full">
+                <div class="mb-4">
+                    <h2 class="pt-2 tm-color-primary tm-post-title">{{post.title}}</h2>
+                    <p style="line-height: 1.5em;" class="{% if post.date_created == post.modified %}tm-mb-40{% endif %} mb-0">{{post.date_created}} posted by 
+                        {{post.author|default_if_none:"Inactive User"}}
+                    </p>
+                    {% if not post.date_created == post.modified %}
+                        <p class="tm-mb-40">Edited... <small>{{post.whenmodified}}</small></p>
+                    {% endif %}
+                    <p style="line-height: 1.5em;">{{post.body|safe}}</p>
+                    <span class="d-block text-right tm-color-primary">
+                        {% for c in post.category.all %}
+                            {{c}}.
+                        {% endfor %}
+                    </span>
+                </div>
+
+                <div class="d-flex">
+                    <div style="margin-right: 5px;">
+                        {% post_to_facebook object_or_url "<i class='fab fa-facebook-square fa-2x'></i>" %}
+                    </div>
+                    <div style="margin-right: 5px;">
+                        {% post_to_twitter text_to_post object_or_url "<i class='fab fa-twitter-square fa-2x'></i>" %}
+                    </div>
+                    <div style="margin-right: 5px;">
+                        {% post_to_telegram text_to_post object_or_url "<i class='fab fa-telegram fa-2x'></i>" %}
+                    </div>
+                    {% post_to_whatsapp object_or_url "<i class='fab fa-whatsapp-square fa-2x'></i>" %}
+                
+                </div>
+                    <!-- Comments -->
+                <div class="main-comment-section" id="comment-table">
+                    {% include 'blog/comments.html' %}
+                </div>
+            </div>
+        </div>
+        <aside class="col-lg-4 tm-aside-col">
+            <div class="tm-post-sidebar">
+                <hr class="mb-3 tm-hr-primary">
+                <h2 class="mb-4 tm-post-title tm-color-primary">Categories</h2>
+                <ul class="tm-mb-75 pl-5 tm-category-list">
+                    {% for c in cate %}
+                        <li><a href="{% url 'category_posts' c.slug %}" class="tm-color-primary">{{c.name}}</a></li>
+                    {% endfor %}
+                </ul>
+                <hr class="mb-3 tm-hr-primary">
+                <h2 class="tm-mb-40 tm-post-title tm-color-primary">Related Posts</h2>
+                {% for r in rela %}
+                <a href="{{r.get_absolute_url}}" class="d-block tm-mb-40">
+                    <figure>
+                        {% if r.image.url != None %}
+                        <img src="{{r.image.url}}" alt="Image" class="mb-3 img-fluid" height="75%">
+                        {% else %}
+                            {% if r.video.url != None %}
+                            <video controls class="mb-3 img-fluid">
+                                <source src="{{r.video.url}}" type="video/mp4">
+                            </video>
+                            {% else %}
+                            <img src="{% static 'media/lll.gif' %}" alt="Image" class="mb-3 img-fluid" height="75%">
+                            {% endif %}
+                        {% endif %}
+                        <figcaption class="tm-color-primary">{{r.title}}</figcaption>
+                    </figure>
+                </a>
+                {% endfor %}
+            </div>
+        </aside>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+
+{% for com in com %}
+    {% if com.author %}
+        <script>
+            $(document).ready(function(ev){
+                $(document).on('click', '#img-ava-{{forloop.counter}}', function(){
+                    Swal.fire({
+                        title: '{{com.author.full_name}}',
+                        imageUrl:"{{com.author.avatarURL}}",
+                    });
+                })
+            })
+        </script>
+    {% else %}
+        <script>
+            $('#img-ava2-{{forloop.counter}}').click(function(){
+                Swal.fire({
+                    title: '{{com.name}}',
+                    imageUrl:"{% static 'media/ligg.jpg' %}",
+                });
+            })
+        </script>
+    {% endif %}
+
+    {% for r in com.replys %}
+        {% if r.author %}
+            <script>
+                $('#rep-ava-{{forloop.counter}}').click(function(){
+                    Swal.fire({
+                        title: '{{r.author.full_name}}',
+                        imageUrl:"{{r.author.avatarURL}}",
+                    });
+                })
+            </script>
+        {% else %}
+            <script>
+                $('#rep-ava2-{{forloop.counter}}').click(function(){
+                    Swal.fire({
+                        title: '{{r.name}}',
+                        imageUrl:"{% static 'media/bib.jpg' %}",
+                    });
+                })
+            </script>
+        {% endif %}
+    {% endfor %}
+    
+{% endfor %}
+
+<script type="text/javascript">
+    var comment = "single-comm-{{forloop.counter}}";
+    var url = "{% static 'js/comment_edit.js' %}";
+    $.getScript(url);
+</script>
+
+
+
+{% endblock %}

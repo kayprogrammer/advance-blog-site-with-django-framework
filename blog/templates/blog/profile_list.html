@@ -1,0 +1,71 @@
+{% load bleach_tags %}
+
+<div class="row">
+  
+  <div class="card" style="width: 60rem; height: auto;">
+    <div class="image" style="background: url('{{author.avatarURL}}');">
+      <img class="card-img-top img-fluid rounded-circle profile-avatar" style="filter: none; cursor: pointer;" src="{{author.avatarURL}}" alt="Card image cap">
+    </div>  
+    <div class="card-body bs-callout">
+      <div class="major text-center mt-2">
+        <h1 class="full">{{author.full_name}}</h1>
+        {% if user == author.user %}
+          <h3 class="main-t">{{author.email}}</h3>
+          <h3 class="main-t">{{author.phone}}</h3>
+        {% endif %}
+        <h3 class="main-t">{{author.job_skill|default:"-----"}}</h3>
+        {% if user == author.user %}
+          <h3 class="main-t">{{author.birthday|default:"-----"}}</h3>
+          <h3 class="main-t">{{author.house_address|default:"-----"}}</h3>
+        {% endif %}
+        <div class="button mb-2">
+            <button class="btn btn-success btn-sm"><a href="{% url 'admin_articles' author.slug %}" style="color: white;">
+              {% if user == author.user %}
+                View Your Articles
+              {% else %}
+                View all {{author.title}} {{author.full_name.split.0}}'s articles
+              {% endif %}
+            </a></button>
+            <button class="btn btn-primary btn-sm"><a href="{% url 'user_questions' author.slug %}" style="color: white;">
+              {% if user == author.user %}
+                View Your Questions
+              {% else %}
+                View all {{author.title}} {{author.full_name.split.0}}'s Questions
+              {% endif %}
+            </a></button>
+          </div>
+      </div>
+      <h1 class="add" style="font-size: 30px; color: #76b852;">Additional Info</h1>
+      <div class="bs-callout bs-callout-danger">
+        <h4>Bio</h4>
+        {% if author.user.is_staff %}
+          <p>{{author.bio|safe|default:"-----"}}</p>
+        {% else %}
+          <p>{{author.bio|default:"-----"|bleach:"p, a, em, strong, div, h1, h2, h3, h4, h5, h6, b, i, u"}}</p>
+        {% endif %}
+      </div>
+      <div class="bs-callout bs-callout-danger">
+          <h4>Place of worship</h4>
+          <p>{{author.place_of_worship|default:"-----"}}</p>
+      </div>
+      <div class="bs-callout bs-callout-danger">
+          <h4>Ministry/Call</h4>
+          <p>{{author.ministry|default:"-----"}}</p>
+      </div>
+      <div class="bs-callout bs-callout-danger">
+          <h4>Interests</h4>
+          <p>{{author.interests|default:"-----"}}</p>
+      </div>
+      <div class="bs-callout bs-callout-danger">
+          <h4>Favourite Scripture</h4>
+          <p>{{author.favourite_scripture|default:"-----"}}</p>
+      </div>
+      <div class="bs-callout bs-callout-danger">
+          <h4>Favourite Quote</h4>
+          <p>{{author.favourite_quote|default:"-----"}}</p>
+      </div>
+    </div>
+    <div class="footer">I am truly loved by Jesus</div>
+  </div>
+
+</div>

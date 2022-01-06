@@ -1,0 +1,18 @@
+<form method="post" action="{% url 'delete_news' n_obj.id %}" class="js-news-delete-form">
+    {% csrf_token %}
+    <div class="modal-header" style="background-color: #76b852;">
+        <button type="button" style="background-color: transparent; border: none;" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: red;">&times;</span>
+        </button>
+        <h4 class="modal-title">Confirm Info deletion</h4>
+    </div>
+
+    <div class="modal-body">
+        <p class="lead" style="color: black;">Are you sure you want to delete this info article..... 
+            <strong>"{{n_obj.title}}"</strong>?</p>
+    </div>
+    <div class="modal-footer" style="background-color: #76b852;">
+        <button type="button" class="btn btn-default" data-dismiss="modal"style="font-weight: bold; color: red;">Close</button>
+        <button type="submit" class="btn btn-danger">Delete News</button>
+    </div>
+</form>

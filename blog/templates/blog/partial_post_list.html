@@ -1,0 +1,75 @@
+{% load static %}
+{% for a in page_obj %}
+    <article class="col-12 col-md-6 tm-post">
+        <hr class="tm-hr-primary">
+        <a href="{{a.get_absolute_url}}" class="effect-lily tm-post-link tm-pt-60" id="link">
+            <div class="tm-post-link-inner" style="width: 100% !important; height: auto !important; max-height: 16rem; object-fit: cover;">
+                {% if a.image.url != None %}
+                    <img src="{{ a.image.url }}" alt="Image" class="img-fluid" style="object-fit: cover; min-height: 16rem;">
+                {% else %}
+                    {% if a.video.url != None %}
+                    <video controls width="400" style="object-fit: cover; min-height: 16rem;">
+                        <source src="{{ a.video.url }}">
+                    </video>
+                    {% else %}
+                    <img src="{% static 'media/lll.gif' %}" alt="Image" class="img-fluid" style="object-fit: cover; min-height: 16rem;">
+                    {% endif %}
+                {% endif %}
+            </div>
+            {% if a.author.user == user %}
+                <button class="position-absolute tm-new-badge js-update-post" id="edit-btn-{{forloop.counter}}" data-url="{% url 'update_post' a.id %}" style="border: none;" type="button">Edit</button>
+            {% endif %}
+            <h2 class="tm-pt-30 tm-color-primary tm-post-title">{{a.title}}</h2>
+        </a>
+        <p class="tm-pt-30 trunc">{{a.body|safe|truncatechars:200}}</p>
+        <div class="d-flex justify-content-between tm-pt-45">
+            <span class="tm-color-primary category">
+                {% for c in a.category.all %}
+                    <a class="cat-link" style="color: #76b852;" href="{% url 'category_posts' c.slug %}">
+                        {{c.name}}.
+                    </a>
+                {% endfor %}
+            </span>
+            <span class="tm-color-primary category">{{a.date_created|date:"M d, Y P"}}</span>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-between category">
+            <span>{{a.get_comment_count}}</span>
+            {% if a.author != None %}
+            <span><a style="color: #999;" href="{% url 'admin' a.author.slug %}">by {{a.author}}</a></span>
+            {% else %}
+            <span><a style="color: #999;" href="#">by Inactive user</a></span>
+            {% endif %}
+        </div>
+    </article>
+
+    <script>
+        /*
+        $(document).ready(function(){
+            $("#edit-btn-{{forloop.counter}}").click(function(){
+                return false;   
+            });
+        });
+        */
+
+        function waitForLoad(id, callback){
+            var timer = setInterval(function(){
+                if(document.getElementById(id)){
+                    clearInterval(timer);
+                    callback();
+                }
+            }, 100);
+        }
+
+        waitForLoad("edit-btn-{{forloop.counter}}", function(){
+            document.getElementById("edit-btn-{{forloop.counter}}").onclick = function()
+            {
+                return false;
+            }
+        });
+        
+        
+    </script>
+{% empty %}
+    <p style="color: blue; text-align: center;">No articles yet!</p>
+{% endfor %}

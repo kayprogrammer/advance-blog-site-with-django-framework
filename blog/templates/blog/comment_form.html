@@ -1,0 +1,16 @@
+{% load static %}
+{% load widget_tweaks %}
+    <!-- Main CSS-->
+    <link href="{% static 'css/form.css' %}?{% now "U" %}" rel="stylesheet" media="all">
+
+    {% if user.is_authenticated %}
+        {% if form.comment %}
+            <div class="card-body">
+                {{form.comment}}
+            </div>
+        {% else %}
+        <div class="card-body">
+            {% render_field form.reply style="width:230px;" %}
+        </div>
+        {% endif %}
+    {% endif %}

@@ -1,0 +1,432 @@
+{% load static %}
+
+
+
+<div class="nav-item dropdown position-relative" style="float: right;">
+	<span class="d-tog" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span style="color: slategrey; cursor: pointer; position: relative; top: 3px;"><i class="fas fa-bell fa-2x" ></i></span>
+        {% if nc != 0 %}
+			<span class="badge bg-primary not-total">{{nc}}</span>
+		{% endif %}
+	</span>
+	<ul  class="dropdown-menu dropdown-menu-right" style=" margin-top: 1em;">
+		<li class="head text-light">
+			<div class="row">
+				<div class="col-lg-12 col-sm-12 col-12">
+					<span class="not-head">Notifications ({{nc}})</span>
+					<a {% if nc != 0 %} onclick="removeAllNotification(`{% url 'mark_read' %}`, `{{ request.path }}`)"{% endif %} style="float: right; cursor: pointer;" class="text-light">Mark all as read</a>
+				</div>
+			</div>
+		</li>
+
+		<li class="notification-box ">
+			{% for notification in n_not %}
+				<!-----ADMIN WARNING NOTIFICATION------>
+				{% if notification.notification_type == 5 %}
+					<hr style="border: 1px solid;">
+					<div class="row disp" style="max-height: 3em;">
+						<a class="disp" href="{{notification.admin_notifications.url}}">
+							<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+								<img class="rounded-circle not-ava " src="{% static 'media/ligg.jpg' %}">
+							</div>
+							<div class="col cdisp">
+								<p class="cdisp" style="line-height: 15px;"><strong>{{notification.admin_notifications.text|safe}}</strong> "Click to read our Community Standards"</p>
+							</div>
+						</a>
+					</div>
+				{% endif %}
+
+				<!-------NEWS & INFO NOTIFICATION------->
+				{% if notification.notification_type == 4 %}
+						<hr style="border: 1px solid;">
+						<div class="row disp" style="max-height: 3em;">
+							<a class="disp" href="{% url 'news-notification2' notification.id notification.news_num notification.title %}">
+								<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+									<img class="rounded-circle not-ava " src="{% static 'media/ligg.jpg' %}">
+								</div>
+								<div class="col cdisp">
+									<p class="cdisp" style="line-height: 15px;"><strong>Please check out this info..</strong> "{{notification.title|truncatechars:"30"|safe}}"</p>
+								</div>
+							</a>
+						</div>
+				{% endif %}
+			{% endfor %}
+
+			{% for notification in notifications %}
+				<!---------------------------------------------------------------------------------->
+				<!---------------------ARTICLE COMMENT REPLY & FLAG NOTIFICATION-------------------->
+				<!---------------------------------------------------------------------------------->
+				{% if notification.article %}
+					<!-----ARTICLE COMMENT NOTIFICATION----->
+					{% if notification.notification_type == 1 %}
+						{% if notification.from_author %}
+							<hr style="border: 1px solid;">
+							<div class="row disp" style="max-height: 3em;">
+								<a class="disp" href="{% url 'post-notification' notification.id notification.article.id notification.article.slug %}">
+									<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+										<img class="rounded-circle not-ava " src="{{notification.from_author.avatarURL}}">
+									</div>
+									<div class="col cdisp">
+										<p class="cdisp" style="line-height: 15px;"><strong>{{notification.from_author}}</strong> commented on your post</p>
+									</div>
+								</a>
+								<div class="col-1 cdisp">
+									<span class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+								</div>
+							</div>
+						{% elif notification.from_visitor %}
+							<hr style="border: 1px solid;">
+							<div class="row disp" style="max-height: 3em;">
+								<a class="disp" href="{% url 'post-notification' notification.id notification.article.id notification.article.slug %}">
+									<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+										<img class="rounded-circle not-ava " src="{% static 'media/ligg.jpg' %}">
+									</div>
+									<div class="col cdisp">
+										<p class="cdisp" style="line-height: 15px;"><strong>{{notification.from_visitor}}</strong> commented on your post</p>
+									</div>
+								</a>
+								<div class="col-1 cdisp">
+									<span class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+								</div>
+							</div>
+						{% endif %}
+					{% endif %}
+					<!---------------------------------------->
+				{% endif %}
+				
+				{% if notification.comment.article %}
+					<!-----ARTICLE REPLY NOTIFICATION----->
+					{% if notification.notification_type == 2 %}
+						{% if notification.from_author %}
+							<hr style="border: 1px solid;">
+							<div class="row disp" style="max-height: 3em;">
+								<a class="disp" href="{% url 'reply-comment-post-notification' notification.id notification.comment.article.id notification.comment.article.slug %}">
+									<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+										<img class="rounded-circle not-ava " src="{{notification.from_author.avatarURL}}">
+									</div>
+									<div class="col cdisp">
+										<p class="cdisp" style="line-height: 15px;"><strong>{{notification.from_author}}</strong> replied your comment "<em>{{notification.comment.comment|truncatechars:30}}</em> "</p>
+									</div>
+								</a>
+								<div class="col-1 cdisp">
+									<span class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+								</div>
+							</div>
+						{% elif notification.from_visitor %}
+							<hr style="border: 1px solid;">
+							<div class="row disp" style="max-height: 3em;">
+								<a class="disp" href="{% url 'reply-comment-post-notification' notification.id notification.comment.article.id notification.comment.article.slug %}">
+									<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+										<img class="rounded-circle not-ava " src="{% static 'media/bib.jpg' %}">
+									</div>
+									<div class="col cdisp">
+										<p class="cdisp" style="line-height: 15px;"><strong>{{notification.from_visitor}}</strong> replied your comment "<em>{{notification.comment.comment|truncatechars:30}}</em> "</p>
+									</div>
+								</a>
+								<div class="col-1 cdisp">
+									<span class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+								</div>
+							</div>
+						{% endif %}
+						<!--------------------------------------->
+					{% endif %}
+					<!-----ARTICLE COMMENT FLAG NOTIFICATION----->
+					{% if notification.notification_type == 6 %}
+						<hr style="border: 1px solid;">
+						<div class="row disp" style="max-height: 3em;">
+							<a style="color: black;" class="disp" href="{% url 'flag-comment-post-notification' notification.id notification.comment.article.id notification.comment.article.slug %}">
+								<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+									<img class="rounded-circle not-ava " src="{{notification.from_author.avatarURL}}">
+								</div>
+								<div class="col cdisp">
+									<p class="cdisp" style="line-height: 17px;">Your comment "<em>{{notification.comment.comment|truncatechars:30}}</em> " was flagged by a user. We're currently checking it and it'll be deleted if it goes against our <a style="color: blue;" href="{% url 'comm' %}">Community standards</a></p>
+								</div>
+							</a>
+							<div class="col-1 cdisp">
+								<span class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+							</div>
+						</div>
+					{% endif %}
+					<!----------------------------------------------->
+				{% endif %}
+				{% if notification.reply.comment.article %}
+					<!-----ARTICLE REPLY FLAG NOTIFICATION----->
+					{% if notification.notification_type == 7 %}
+						<hr style="border: 1px solid;">
+						<div class="row disp" style="max-height: 3em;">
+							<a style="color: black;" class="disp" href="{% url 'flag-reply-post-notification' notification.id notification.reply.comment.article.id notification.reply.comment.article.slug %}">
+								<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+									<img class="rounded-circle not-ava " src="{{notification.from_author.avatarURL}}">
+								</div>
+								<div class="col cdisp">
+									<p class="cdisp" style="line-height: 17px;">Your reply "<em>{{notification.reply.reply|truncatechars:30}}</em> " was flagged by a user. We're currently checking it and it'll be deleted if it goes against our <a style="color: blue;" href="{% url 'comm' %}">Community standards</a></p>
+								</div>
+							</a>
+							<div class="col-1 cdisp">
+								<span class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+							</div>
+						</div>
+					{% endif %}
+					<!------------------------------------------>
+				{% endif %}
+				<!---------------------------------------------------------------------------------->
+				<!-----------------------------END OF ARTICLE MATTA--------------------------------->
+				<!---------------------------------------------------------------------------------->
+
+				<!---------------------------------------------------------------------------------->
+				<!---------------------QUESTION COMMENT REPLY & FLAG NOTIFICATION-------------------->
+				<!---------------------------------------------------------------------------------->				
+				{% if notification.question %}
+					<!------QUESTION COMMENT NOTIFICATION------>
+					{% if notification.notification_type == 1 %}
+						{% if notification.from_author %}
+							<hr style="border: 1px solid;">
+							<div class="row disp" style="max-height: 3em;">
+								<a class="disp" href="{% url 'question-notification' notification.id notification.question.id notification.question.slug %}">
+									<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+										<img class="rounded-circle not-ava " src="{{notification.from_author.avatarURL}}">
+									</div>
+									<div class="col cdisp">
+										<p class="cdisp" style="line-height: 15px;"><strong>{{notification.from_author}}</strong> answered your question</p>
+									</div>
+								</a>
+								<div class="col-1 cdisp">
+									<span class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+								</div>
+							</div>
+						{% elif notification.from_visitor %}
+							<hr style="border: 1px solid;">
+							<div class="row disp" style="max-height: 3em;">
+								<a class="disp" href="{% url 'question-notification' notification.id notification.question.id notification.question.slug %}">
+									<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+										<img class="rounded-circle not-ava " src="{% static 'media/ligg.jpg' %}">
+									</div>
+									<div class="col cdisp">
+										<p class="cdisp" style="line-height: 15px;"><strong>{{notification.from_visitor}}</strong> answered your question</p>
+									</div>
+								</a>
+								<div class="col-1 cdisp">
+									<span class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+								</div>
+							</div>
+						{% endif %}
+					{% endif %}
+					<!-------------------------------------------->
+				{% endif %}
+				{% if notification.comment.question %}
+					<!------QUESTION REPLY NOTIFICATION------>
+					{% if notification.notification_type == 2 %}
+						{% if notification.from_author %}
+							<hr style="border: 1px solid;">
+							<div class="row disp" style="max-height: 3em;">
+								<a class="disp" href="{% url 'reply-answer-question-notification' notification.id notification.comment.question.id notification.comment.question.slug %}">
+									<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+										<img class="rounded-circle not-ava " src="{{notification.from_author.avatarURL}}">
+									</div>
+									<div class="col cdisp">
+										<p class="cdisp" style="line-height: 15px;"><strong>{{notification.from_author}}</strong> replied your answer "<em>{{notification.comment.comment|truncatechars:30}}</em> "</p>
+									</div>
+								</a>
+								<div class="col-1 cdisp">
+									<span class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+								</div>
+							</div>
+						{% elif notification.from_visitor %}
+							<hr style="border: 1px solid;">
+							<div class="row disp" style="max-height: 3em;">
+								<a class="disp" href="{% url 'reply-answer-question-notification' notification.id notification.comment.question.id notification.comment.question.slug %}">
+									<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+										<img class="rounded-circle not-ava " src="{% static 'media/bib.jpg' %}">
+									</div>
+									<div class="col cdisp">
+										<p class="cdisp" style="line-height: 15px;"><strong>{{notification.from_visitor}}</strong> replied your answer "<em>{{notification.comment.comment|truncatechars:30}}</em> "</p>
+									</div>
+								</a>
+								<div class="col-1 cdisp">
+									<spa class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+								</div>
+							</div>
+						{% endif %}
+					{% endif %}
+					<!---------------------------------------------->
+					<!-----QUESTION COMMENT FLAG NOTIFICATION----->
+					{% if notification.notification_type == 6 %}
+						<hr style="border: 1px solid;">
+						<div class="row disp" style="max-height: 3em;">
+							<a style="color: black;" class="disp" href="{% url 'flag-answer-question-notification' notification.id notification.comment.question.id notification.comment.question.slug %}">
+								<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+									<img class="rounded-circle not-ava " src="{{notification.from_author.avatarURL}}">
+								</div>
+								<div class="col cdisp">
+									<p class="cdisp" style="line-height: 17px;">Your answer "<em>{{notification.comment.comment|truncatechars:30}}</em> " was flagged by a user. We're currently checking it and it'll be deleted if it goes against our <a style="color: blue;" href="{% url 'comm' %}">Community standards</a></p>
+								</div>
+							</a>
+							<div class="col-1 cdisp">
+								<span class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+							</div>
+						</div>
+					{% endif %}
+					<!----------------------------------------------->
+				{% endif %}
+				{% if notification.reply.comment.question %}
+					<!-----QUESTION REPLY FLAG NOTIFICATION----->
+					{% if notification.notification_type == 7 %}
+						<hr style="border: 1px solid;">
+						<div class="row disp" style="max-height: 3em;">
+							<a style="color: black;" class="disp" href="{% url 'flag-reply-answer-question-notification' notification.id notification.reply.comment.question.id notification.reply.comment.question.slug %}">
+								<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+									<img class="rounded-circle not-ava " src="{{notification.from_author.avatarURL}}">
+								</div>
+								<div class="col cdisp">
+									<p class="cdisp" style="line-height: 17px;">Your reply "<em>{{notification.reply.reply|truncatechars:30}}</em> " was flagged by a user. We're currently checking it and it'll be deleted if it goes against our <a style="color: blue;" href="{% url 'comm' %}">Community standards</a></p>
+								</div>
+							</a>
+							<div class="col-1 cdisp">
+								<span class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+							</div>
+						</div>
+					{% endif %}
+					<!------------------------------------------>
+				{% endif %}
+				<!---------------------------------------------------------------------------------->
+				<!-----------------------------END OF QUESTION MATTA-------------------------------->
+				<!---------------------------------------------------------------------------------->
+
+				<!---------------------------------------------------------------------------------->
+				<!---------------------NEWS & INFO COMMENT REPLY & FLAG NOTIFICATION---------------->
+				<!---------------------------------------------------------------------------------->								
+				{% if notification.news %}
+					<!------NEWS COMMENT NOTIFICATION------>
+					{% if notification.notification_type == 1 %}
+						{% if notification.from_author %}
+							<hr style="border: 1px solid;">
+							<div class="row disp" style="max-height: 3em;">
+								<a class="disp" href="{% url 'news-notification' notification.id notification.news.slug %}">
+									<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+										<img class="rounded-circle not-ava " src="{{notification.from_author.avatarURL}}">
+									</div>
+									<div class="col cdisp">
+										<p class="cdisp" style="line-height: 15px;"><strong>{{notification.from_author}}</strong> commented on your news post</p>
+									</div>
+								</a>
+								<div class="col-1 cdisp">
+									<span class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+								</div>
+							</div>
+						{% elif notification.from_visitor %}
+							<hr style="border: 1px solid;">
+							<div class="row disp" style="max-height: 3em;">
+								<a class="disp" href="{% url 'news-notification' notification.id notification.news.slug %}">
+									<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+										<img class="rounded-circle not-ava " src="{% static 'media/ligg.jpg' %}">
+									</div>
+									<div class="col cdisp">
+										<p class="cdisp" style="line-height: 15px;"><strong>{{notification.from_visitor}}</strong> commented on your news post</p>
+									</div>
+								</a>
+								<div class="col-1 cdisp">
+									<span class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+								</div>
+							</div>
+						{% endif %}
+					{% endif %}
+					<!------------------------------------------->
+					
+				{% endif %}
+				{% if notification.comment.news %}
+					<!---------NEWS REPLY NOTIFICATION--------->
+					{% if notification.notification_type == 2 %}
+						{% if notification.from_author %}
+							<hr style="border: 1px solid;">
+							<div class="row disp" style="max-height: 3em;">
+								<a class="disp" href="{% url 'reply-comment-news-notification' notification.id notification.comment.news.slug %}">
+									<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+										<img class="rounded-circle not-ava " src="{{notification.from_author.avatarURL}}">
+									</div>
+									<div class="col cdisp">
+										<p class="cdisp" style="line-height: 15px;"><strong>{{notification.from_author}}</strong> replied your comment "<em>{{notification.comment.comment|truncatechars:30}}</em> "</p>
+									</div>
+								</a>
+								<div class="col-1 cdisp">
+									<span class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+								</div>
+							</div>
+						{% elif notification.from_visitor %}
+							<hr style="border: 1px solid;">
+							<div class="row disp" style="max-height: 3em;">
+								<a class="disp" href="{% url 'reply-comment-news-notification' notification.id notification.comment.news.slug %}">
+									<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+										<img class="rounded-circle not-ava " src="{% static 'media/bib.jpg' %}">
+									</div>
+									<div class="col cdisp">
+										<p class="cdisp" style="line-height: 15px;"><strong>{{notification.from_visitor}}</strong> replied your comment "<em>{{notification.comment.comment|truncatechars:30}}</em> "</p>
+									</div>
+								</a>
+								<div class="col-1 cdisp">
+									<span class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+								</div>
+							</div>
+						{% endif %}
+					{% endif %}
+					<!----------------------------------------->
+					<!-----NEWS COMMENT FLAG NOTIFICATION----->
+					{% if notification.notification_type == 6 %}
+						<hr style="border: 1px solid;">
+						<div class="row disp" style="max-height: 3em;">
+							<a style="color: black;" class="disp" href="{% url 'flag-comment-news-notification' notification.id notification.comment.news.slug %}">
+								<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+									<img class="rounded-circle not-ava " src="{{notification.from_author.avatarURL}}">
+								</div>
+								<div class="col cdisp">
+									<p class="cdisp" style="line-height: 17px;">Your comment "<em>{{notification.comment.comment|truncatechars:30}}</em> " was flagged by a user. We're currently checking it and it'll be deleted if it goes against our <a style="color: blue;" href="{% url 'comm' %}">Community standards</a></p>
+								</div>
+							</a>
+							<div class="col-1 cdisp">
+								<span class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+							</div>
+						</div>
+					{% endif %}
+					<!----------------------------------------------->
+				{% endif %}
+				{% if notification.reply.comment.news %}
+					<!-----NEWS REPLY FLAG NOTIFICATION----->
+					{% if notification.notification_type == 7 %}
+						<hr style="border: 1px solid;">
+						<div class="row disp" style="max-height: 3em;">
+							<a style="color: black;" class="disp" href="{% url 'flag-reply-news-notification' notification.id notification.reply.comment.news.slug %}">
+								<div class="col-1 cdisp" style=" margin-right: 1.4em;">
+									<img class="rounded-circle not-ava " src="{{notification.from_author.avatarURL}}">
+								</div>
+								<div class="col cdisp">
+									<p class="cdisp" style="line-height: 17px;">Your reply "<em>{{notification.reply.reply|truncatechars:30}}</em> " was flagged by a user. We're currently checking it and it'll be deleted if it goes against our <a style="color: blue;" href="{% url 'comm' %}">Community standards</a></p>
+								</div>
+							</a>
+							<div class="col-1 cdisp">
+								<span class="cancel-btn" onclick="removeNotification(`{% url 'notification-delete' notification.id %}`, `{{ request.path }}`)">&#10006;</span>
+							</div>
+						</div>
+					{% endif %}
+					<!------------------------------------------>
+				{% endif %}
+				<!---------------------------------------------------------------------------------->
+				<!-----------------------------END OF NEWS MATTA-------------------------------->
+				<!---------------------------------------------------------------------------------->
+
+
+				{% if forloop.last %}<hr style="border: 1px solid;">{% endif %}
+				
+			{% empty %}
+				{% if nc == 0 %}
+					<hr style="border: 1px solid;">
+					<p class="no-notf">You have no new notifications yet! Check later...</p>
+					<hr style="border: 1px solid;">
+				{% endif %}
+			{% endfor %}
+		</li>
+		
+		<li class="footer text-center">
+			<a class="text-light">I am blessed</a>
+		</li>
+	</ul>
+</div>
+

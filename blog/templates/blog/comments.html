@@ -1,0 +1,135 @@
+{% load static %}
+
+<h2 class="tm-color-primary tm-post-title" id="com-tag">{% if question %}Answers({{question.question_comments.count}}){% elif n_obj %}Comments({{n_obj.news_comments.count}}){% else %}Comments({{post.comments.count}}){% endif %}</h2>
+<hr class="tm-hr-primary ">
+{% if not post.comments.count == 0 and post.comments %}
+<a href="#comment-form" class="tm-mb-45">Write a Comment</a>
+{% elif not question.question_comments.count == 0 and question.question_comments %}
+<a href="#comment-form" class="tm-mb-45">Write an Answer</a>
+{% elif not n_obj.news_comments.count == 0 and n_obj.news_comments %}
+<a href="#comment-form" class="tm-mb-45">Write a Comment</a>
+{% endif %}
+
+
+<div class="comment-class" style="margin-top: 2em;" id="all_comment">
+    
+    {% for com in com %}  
+
+    <div class="modal fade mc" id="mc{{forloop.counter}}">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content"></div>
+        </div>
+    </div>
+
+    <div id="single-comm-{{forloop.counter}}" class="comee">
+        <div class="tm-comment tm-mb-45" {% if forloop.last %}id="new_comment"{% endif %}>
+            <figure class="tm-comment-figure" align="center">
+                {% if com.author %}
+                <img src="{{com.author.avatarURL}}" id="img-ava-{{forloop.counter}}" alt="Image" class="mb-2 rounded-circle img-thumbnail img-ava">
+                {% else %}
+                <img src="{% static 'media/ligg.jpg' %}" id="img-ava2-{{forloop.counter}}" alt="Image" class="mb-2 img-ava rounded-circle img-thumbnail">
+                {% endif %}
+                <figcaption class="tm-color-primary text-center name">
+                {% if com.author is not None %}
+                    {% if com.author.user.is_staff %}
+                        <a class="tm-color-primary" style="font-weight: bold;" href="{% url 'admin' com.author.slug %}">{{com.author|capfirst}}</a>
+                    {% else %}
+                        {{com.author|capfirst}}
+                    {% endif %}
+                {% else %}
+                    {% if com.name is not None %}
+                        {{com.name|capfirst}}
+                    {% else %}
+                        Inactive User
+                    {% endif %}
+                {% endif %}</figcaption>
+            </figure>
+            <div class="dis-cou" id="comment-{{com.id}}">
+                <p class="com-body">{{com.comment|safe}}</p>
+                {% if user.is_authenticated %}
+                <div class="row rep-tinzz reppll" style="width: 15em;">
+                    {% if not user.author == com.author %}
+                    <div class="col-4 rep-col-3">
+                        <form action="{% if com.article %}{% url 'flag-comment-toggle' com.article.id com.article.slug com.id %}{% elif com.question %}{% url 'flag-question-comment-toggle' com.question.id com.question.slug com.id %}{% elif com.news %}{% url 'flag-news-comment-toggle' com.news.slug com.id %}{% endif %}" class="flag-forms">
+                            {% csrf_token %}
+                            <button name="btnn" id="disappr-{{com.id}}" class="tm-color-primary repll name disapprove-btn">
+                                {% if user.author not in com.flagged.all %}
+                                    <i class="far fa-flag"></i>
+                                {% else %}
+                                    <i style="color:red;" class="fas fa-flag"></i>
+                                {% endif %}
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                    <div class="{% if user.author == com.author %}col-10 rep-col{% else %}col-6 rep-col-2{% endif %} b-tinzz replies-btn">
+                        <button type="button" id="repll-{{forloop.counter}}" class="repll tm-color-primary rep-btn name">
+                            {% include 'blog/rep.html' %}
+                        </button>
+                    </div>
+                    <div class="col">
+                        <span style="position: absolute;" class="tm-color-primary name yeasss">{{com.whenpublished}}</span>
+                    </div>
+                    
+                </div>
+                <div class="row" style="width: 18.7em;">
+                    {% if user.author == com.author %}
+                    <div class="col-8 rep-col">
+                        <button class="repll tm-color-primary name js-edit-comment" data-url="{% url 'edit_comment' com.id %}">Edit</button>
+                    </div>
+                    <div class="col">
+                        <button class="repll tm-color-primary js-delete-comment name yeasss" id="del-com-{{forloop.counter}}" data-url="{% url 'delete_comment' com.id %}" value="{{com.id}}">Delete</button>
+                    </div>
+                    {% endif %}
+                </div>
+                {% else %}
+                    <div class="row rep-tinzz" style="width: 14em;">
+                        <div class="col replies-btn" >
+                            <button type="button" id="repll-{{forloop.counter}}" class="repll tm-color-primary rep-btn name">
+                                {% include 'blog/rep.html' %}
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button class="repll tm-color-primary name">{{com.whenpublished}}</button>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="replyy hidden" id="replied-comments-{{com.id}}">
+            {% include 'blog/replies.html' %}
+        </div>
+    </div>
+    {% empty %}
+    <p colspan="8" class="text-center" style="color:blue;">No {% if question %}answers yet!. Be the first to answer the question{% else %}Comments yet!. Be the first to write a comment{% endif %}...</p>
+    {% endfor %}
+</div>
+{% if post.comments.count > 9 %}
+<a style="display: inline-block; margin-bottom: 1em;" href="#com-tag">Top commments</a>
+{% elif question.question_comments.count > 9  %}
+<a style="display: inline-block; margin-bottom: 1em;" href="#com-tag">Top answers</a>
+{% elif n_obj.news_comments.count > 9 %}
+<a style="display: inline-block; margin-bottom: 1em;" href="#com-tag">Top commments</a>
+{% endif %}
+<form action="." class="mb-5 tm-comment-form" method="post" id="comment-form">
+    {% csrf_token %}
+    <h2 class="tm-color-primary tm-post-title mb-4" style="font-size: 1.5em;">{% if question %}Your Answer{% else %}Your comment{% endif %}</h2>
+    {% if user.is_authenticated %}
+    {% else %}
+    <div class="mb-4">
+        {{form.name}}
+    </div>
+    <div class="mb-4">
+        {{form.email}}
+    </div>
+    {% endif %}
+    <div class="mb-4">
+        {{form.comment}}
+    </div>
+    
+    <div class="text-right">
+        <button type="submit" class="tm-btn tm-btn-primary tm-btn-small ">Submit</button>
+    </div>
+    {{form.errors}}
+</form>

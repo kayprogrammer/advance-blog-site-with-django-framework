@@ -1,0 +1,11 @@
+<h2 class="pt-2 tm-color-primary tm-post-title">{{question.title}}</h2>
+<p style="line-height: 1.5em;" class="{% if question.date_created == question.modified %}tm-mb-40{% endif %} mb-0">{{question.date_created}} asked by {{question.author|default_if_none:"Inactive User"}}</p>
+{% if not question.date_created == question.modified %}
+    <p class="tm-mb-40">Edited... <small>{{question.whenmodified}}</small></p>
+{% endif %}
+<p style="line-height: 1.5em;">{{question.text|safe}}</p>
+<span class="d-block text-right tm-color-primary">
+    {% for c in question.category.all %}
+        <a style="color: #2e8b57;" href="{% url 'category_questions' c.slug %}">{{c}}</a>.
+    {% endfor %}
+</span>

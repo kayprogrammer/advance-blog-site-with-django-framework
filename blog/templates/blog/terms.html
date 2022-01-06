@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Affordable and professional web design">
+	<meta name="keywords" content="web design, affordable web design, professional web design">
+  	<meta name="author" content="Brad Traversy">
+    <title>HopTeens Blog | Terms And Conditions</title>
+    <link rel="stylesheet" href="{% static 'css/terms.css' %}?{% now "U" %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+  </head>
+  <body>
+    
+    <section id="main">
+      <div class="container">
+        <article id="main-col">
+          <h1 class="page-title">Terms And Conditions</h1>
+          <p>These Terms and Conditions constitute a legally binding agreement made between you, whether personally or on behalf of an entity and us at HopTeens Blog, concerning your access to and use of the website as well as any other media form, media channel, mobile website or mobile application. 
+
+            You agree that by accessing the Site, you have read, understood, and agree to be bound by all of these Terms and Conditions. If you do not agree with all of these Terms and Conditions, then you are expressly prohibited from using the Site and you must discontinue use immediately.
+            
+            Supplemental terms and conditions or documents that may be posted on the Site from time to time are hereby expressly incorporated herein by reference. We reserve the right, in our sole discretion, to make changes or modifications to these Terms and Conditions at any time and for any reason. 
+            
+            We will alert you about any changes by sending you a message in the notification section if you're logged in. 
+            
+            
+            
+            
+            It is your responsibility to periodically review these Terms and Conditions to stay informed of updates. You will be subject to, and will be deemed to have been made aware of and to have accepted, the changes in any revised Terms and Conditions by your continued use of the Site after the date and time such revised Terms and Conditions are posted. 
+            </p>
+          <ul id="services">
+            {% for t in terms %}
+            <li>
+              <h3>{{t.title}}</h3>
+              <p>{{t.text|safe}}</p>
+            </li>
+            
+            {% endfor %}
+          </ul>
+          <a href="{% url 'comm' %}">Click here to see our Community Standards</a>
+        </article>
+        
+      </div>
+    </section>
+
+    <footer>
+      <p>HopTeens Blog, Copyright &copy; {% now "Y" %}</p>
+    </footer>
+  </body>
+</html>

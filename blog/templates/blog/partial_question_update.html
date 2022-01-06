@@ -1,0 +1,19 @@
+<form method="post" action="{% url 'update_question' form.instance.pk %}" class="js-question-update-form">
+  
+    {% csrf_token %}
+    <div class="modal-header" style="background-color: #76b852;">
+      <button type="button" style="background-color: transparent; border: none;" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" style="color: red;">&times;</span>
+      </button>
+      <h4 class="modal-title">Edit your Question</h4>
+    </div>
+    <div class="modal-body">
+      {% include 'blog/question_form.html' %}
+    </div>
+    <div class="modal-footer" style="background-color: #76b852;">
+      <button type="button" class="btn btn-default" data-dismiss="modal" style="font-weight: bold; color: red;">Close</button>
+      <button type="submit" class="btn btn-primary">Update Question</button>
+    </div>
+  </form> 
+  
+  

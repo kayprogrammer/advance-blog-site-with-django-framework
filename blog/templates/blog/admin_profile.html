@@ -1,0 +1,21 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% block title %} | Admin Profile{% endblock %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/profile.css' %}?{% now "U" %}">
+<div id="profile">
+    {% include 'blog/profile_list.html' %}
+</div>
+
+{% block javascript %}
+    <script>
+        $('.profile-avatar').click(function(){
+            Swal.fire({
+                imageUrl:"{{author.avatarURL}}",
+            });
+        })
+    </script>
+{% endblock %}
+
+{% endblock %}

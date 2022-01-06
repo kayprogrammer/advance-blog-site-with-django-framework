@@ -1,0 +1,23 @@
+{% for q in questions %}
+    <div class="col-sm-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h1 style="font-weight: bold;"><img style="cursor: pointer;" id="question-ava-{{forloop.counter}}" src="{{q.author.avatarURL}}" class="question-ava rounded-circle">{{q.author|default_if_none:"Inactive User"|capfirst}} posted...</h1>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{q.title}}</h5>
+                <p class="card-text ">{{q.text|safe|truncatechars:"100"}}</p>
+                <a href="{% url 'question_detail' q.id q.slug %}" class="btn btn-primary btn-sm">View more</a>
+            </div>
+
+            <div class="d-flex justify-content-between foot">
+                <span class="head-foot categg">{% for c in q.category.all %}<a style="color: purple;" href="{% url 'category_questions' c.slug %}">{{c.name }} .. </a>{% endfor %}</span>
+                <span class="head-foot">asked {{q.whenpublished}}</span>
+            </div>
+                                        
+        </div>
+    </div>
+    
+{% empty %}
+    <p style="color: blue; text-align: center;">No Questions asked yet!</p>
+{% endfor %}

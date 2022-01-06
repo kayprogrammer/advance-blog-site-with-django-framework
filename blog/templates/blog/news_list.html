@@ -1,0 +1,22 @@
+{% load static %}
+{% for n in news %}
+    <div class="col-sm-6">
+        <a href="{% url 'news_detail' n.slug %}">
+            <div class="card bg-dark text-white mb-4">
+                {% if n.image.url != None %}
+                    <img class="card-img" src="{{n.image.url}}" alt="Card image" height="400">
+                {% else %}
+                    {% if n.video.url != None %}
+                    <video controls class="card-vid">
+                        <source src="{{n.video.url}}">
+                    </video>
+                    {% else %}
+                    <img class="card-img" src="{% static 'media/lll.gif' %}" alt="Card image" height="400">
+                    {% endif %}
+                {% endif %}
+            </div>
+        </a>
+    </div>
+{% empty %}
+    <p style="color: blue;" class="text-center">There are no news updates yet! Check later</p>
+{% endfor %}

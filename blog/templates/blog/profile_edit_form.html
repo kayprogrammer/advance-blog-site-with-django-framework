@@ -1,0 +1,118 @@
+{% load widget_tweaks %}
+{% load static %}
+    <!-- Main CSS-->
+    <link href="{% static 'css/form.css' %}?{% now "U" %}" rel="stylesheet" media="all">
+
+
+    <div class="card-body">
+        <div class="form-row">
+            <div class="name">Title</div>
+            <div class="value">
+                {% render_field form.title class+="input-title input--style-6" placeholder="Enter your full name..." %}
+                {{form.full_name.errors}}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Full name</div>
+            <div class="value">
+                {% render_field form.full_name class+="input--style-6" placeholder="Enter your full name..." %}
+                {{form.full_name.errors}}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Phone number</div>
+            <div class="value">
+                {% render_field form.phone class+="input--style-6" placeholder="Enter your phone number with country code..." %}
+                {{form.phone.errors}}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="name">Bio</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.media}}
+                    {{form.bio}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Home Address</div>
+            <div class="value">
+                {% render_field form.house_address class+="input--style-6" placeholder="Where do you live?..." %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Place of worship</div>
+            <div class="value">
+                <div class="input-group">
+                    {% render_field form.place_of_worship class+="input--style-6" placeholder="Where do you worship?..." %}
+
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Job/Skill</div>
+            <div class="value">
+                {% render_field form.job_skill class+="input--style-6" placeholder="What do you do?..." %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Ministry/Call</div>
+            <div class="value">
+                {% render_field form.ministry class+="input--style-6" %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Interests</div>
+            <div class="value">
+                <div class="input-group">
+                    {% render_field form.interests class+="input--style-6" placeholder="What are you interested in?..." %}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Date of Birth</div>
+            <div class="value">
+                {% render_field form.birthday class+="input--style-6" placeholder="Enter your date of birth..." %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Favourite Scripture</div>
+            <div class="value">
+                <div class="input-group">
+                    {% render_field form.favourite_scripture class+="input--style-6" placeholder="Enter your favourite scripture..." %}
+
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Favourite Quote</div>
+            <div class="value">
+                <div class="input-group">
+                    {% render_field form.favourite_quote class+="input--style-6" placeholder="Enter your favourite quote..." %}
+    
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Select Image</div>
+            <div class="value">
+                <div class="input-group js-input-file">
+                    {{form.avatar}}
+                    {{form.avatar.errors}}
+
+                    <label class="label--file" for="file">Choose</label>
+                    <span class="input-file__info">No image chosen</span>
+                </div>
+                <div id="img-box"></div>
+                <div class="label--desc">Upload a profile picture. 1mb max-width</div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var url = "{% static 'js/form.js' %}"
+        $.getScript(url);
+       
+    </script>

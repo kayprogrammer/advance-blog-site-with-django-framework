@@ -1,0 +1,132 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% block title %} | Question{% endblock %}
+{% block content %}
+{% load social_share %}
+
+<div class="fonn">
+    {% if user == question.author.user %}
+    <button type="button" class="btn btn-info btn-sm js-update-question" data-url="{% url 'update_question' question.id %}">Edit</button>
+    <button type="button" class="btn btn-danger btn-sm js-delete-question" data-url="{% url 'delete_question' question.id %}">Delete</button>
+    {% endif %}
+
+    <div class="modal fade" id="modal-question">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content"></div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-question2">
+        <div class="modal-dialog">
+            <div class="modal-content"></div>
+        </div>
+    </div>
+
+    <div class="row tm-row">
+        <div class="col-lg-8 tm-post-col">
+            <div class="tm-post-full">
+                <div class="mb-4" id="question-detail">
+                    {% include 'blog/partial_question_detail.html' %}
+                </div>
+
+                <div class="d-flex">
+                    <div style="margin-right: 5px;">
+                        {% post_to_facebook object_or_url "<i class='fab fa-facebook-square fa-2x'></i>" %}
+                    </div>
+                    <div style="margin-right: 5px;">
+                        {% post_to_twitter text_to_post object_or_url "<i class='fab fa-twitter-square fa-2x'></i>" %}
+                    </div>
+                    <div style="margin-right: 5px;">
+                        {% post_to_telegram text_to_post object_or_url "<i class='fab fa-telegram fa-2x'></i>" %}
+                    </div>
+                    {% post_to_whatsapp object_or_url "<i class='fab fa-whatsapp-square fa-2x'></i>" %}
+                
+                </div>
+
+                <!-- Answers -->
+                <div class="main-comment-section">
+                    {% include 'blog/comments.html' %}
+                </div>
+            </div>
+        </div>
+        <aside class="col-lg-4 tm-aside-col">
+            <div class="tm-post-sidebar">
+                <hr class="mb-3 tm-hr-primary">
+                <h2 class="mb-4 tm-post-title tm-color-primary">Categories</h2>
+                <ul class="tm-mb-75 pl-5 tm-category-list">
+                    {% for c in categories %}
+                        <li><a href="" class="tm-color-primary">{{c.name}}</a></li>
+                    {% endfor %}
+                </ul>
+                <hr class="mb-3 tm-hr-primary">
+                <h2 class="tm-mb-40 tm-post-title tm-color-primary">Related Questions</h2>
+                {% for r in related_questions %}
+                <a href="{{r.get_absolute_url}}" class="d-block tm-mb-40">
+                    <figure>
+                        
+                        <figcaption style="font-size: large;" class="tm-color-primary">{{r.title}}</figcaption>
+                        <p style="font-size: smaller;">{{r.text|safe|truncatechars:"50"}}</p>
+                    </figure>
+                    <hr class="tm-hr-primary2">
+                </a>
+                
+                {% endfor %}
+            </div>
+        </aside>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        var page_url = "{% url 'community' %}"
+        var url = "{% static 'js/community.js' %}";
+        $.getScript(url);
+    </script>
+
+    {% for com in com %}
+        {% if com.author %}
+            <script>
+                $('#img-ava-{{forloop.counter}}').click(function(){
+                    Swal.fire({
+                        title: '{{com.author.full_name}}',
+                        imageUrl:"{{com.author.avatarURL}}",
+                    });
+                })
+            </script>
+        {% else %}
+            <script>
+                $('#img-ava2-{{forloop.counter}}').click(function(){
+                    Swal.fire({
+                        title: '{{com.name}}',
+                        imageUrl:"{% static 'media/ligg.jpg' %}",
+                    });
+                })
+            </script>
+        {% endif %}
+
+        {% for r in com.replys %}
+            {% if r.author %}
+                <script>
+                    $('#rep-ava-{{forloop.counter}}').click(function(){
+                        Swal.fire({
+                            title: '{{r.author.full_name}}',
+                            imageUrl:"{{r.author.avatarURL}}",
+                        });
+                    })
+                </script>
+            {% else %}
+                <script>
+                    $('#rep-ava2-{{forloop.counter}}').click(function(){
+                        Swal.fire({
+                            title: '{{r.name}}',
+                            imageUrl:"{% static 'media/bib.jpg' %}",
+                        });
+                    })
+                </script>
+            {% endif %}
+        {% endfor %}
+
+    {% endfor %}
+{% endblock %}

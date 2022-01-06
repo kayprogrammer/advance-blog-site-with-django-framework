@@ -1,0 +1,40 @@
+{% if form.instance.article %}
+
+<form method="post" action="{% url 'edit_comment' form.instance.pk %}" class="js-comment-edit-form">
+  
+    {% csrf_token %}
+    <div class="modal-header" style="background-color: #76b852;">
+      <button type="button" style="background-color: transparent; border: none;" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" style="color: red;">&times;</span>
+      </button>
+      <h4 class="modal-title">Edit Your {% if form.instance.question %}Answer{% else %}Comment{% endif %}</h4>
+    </div>
+    <div class="modal-body">
+      {% include 'blog/comment_form.html' %}
+    </div>
+    <div class="modal-footer" style="background-color: #76b852;">
+      <button type="button" class="btn btn-default" data-dismiss="modal" style="font-weight: bold; color: red;">Close</button>
+      <button type="submit" class="btn btn-primary">Update Comment</button>
+    </div>
+</form> 
+  
+{% else %}
+<form method="post" action="{% url 'edit_reply' form.instance.pk %}" class="js-reply-edit-form">
+  
+  {% csrf_token %}
+  <div class="modal-header" style="background-color: #76b852;">
+    <button type="button" style="background-color: transparent; border: none;" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" style="color: red;">&times;</span>
+    </button>
+    <h4 class="modal-title">Edit Your Reply</h4>
+  </div>
+  <div class="modal-body">
+    {% include 'blog/comment_form.html' %}
+  </div>
+  <div class="modal-footer" style="background-color: #76b852;">
+    <button type="button" class="btn btn-default" data-dismiss="modal" style="font-weight: bold; color: red;">Close</button>
+    <button type="submit" class="btn btn-primary">Update Reply</button>
+  </div>
+</form> 
+
+{% endif %}

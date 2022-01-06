@@ -1,0 +1,18 @@
+<form method="post" action="{% url 'create_news' %}" class="js-news-create-form" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal-header" style="background-color: #76b852;">
+        <button type="button" style="background-color: transparent; border: none;" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" style="color: red;">&times;</span>
+        </button>
+        <h4 class="modal-title">Create a News Article</h4>
+    </div>
+    <div class="modal-body">
+        {% include 'blog/news_form.html' %}
+    </div>
+    <div class="modal-footer" style="background-color: #76b852;">
+        <button type="button" class="btn btn-default" data-dismiss="modal" style="font-weight: bold; color: red;">Close</button>
+        <button type="submit" class="btn btn-primary">Create News</button>
+</div>
+</form> 
+
+  

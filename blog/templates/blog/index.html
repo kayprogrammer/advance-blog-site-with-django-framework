@@ -1,0 +1,666 @@
+{% load static %}
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HopTeens Blog{% block title %}{% endblock %}</title>
+	<link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}"> <!-- https://fontawesome.com/ -->
+	<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet"> <!-- https://fonts.google.com/ -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}?{% now "U" %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css">
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css">
+<!--
+    
+TemplateMo 553 Xtra Blog
+
+https://templatemo.com/tm-553-xtra-blog
+
+-->
+</head>
+<body>
+	<header class="tm-header" id="tm-header">
+        <div class="tm-header-wrapper">
+            <button class="navbar-toggler" type="button" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="tm-site-header">
+                <div class="mb-3 mx-auto tm-site-logo"><i class="fas fa-cross fa-3x"></i></div>            
+                <h1 class="text-center">HopTeens Blog</h1>
+            </div>
+            <nav class="tm-nav" id="tm-nav">            
+                <ul>
+                    {% url 'home' as home_url %}
+                    <li class="tm-nav-item {% if request.path == home_url %} active {% endif %}"><a href="{% url 'home' %}" class="tm-nav-link">
+                        <i class="fas fa-home"></i>
+                        Blog Home
+                    </a></li>
+                    {% if user.is_authenticated %}
+                    {% url 'profile' user.author.slug as profile_url %}
+                    <li class="tm-nav-item {% if request.path == profile_url %} active {% endif %}"><a href="{% url 'profile' user.author.slug %}" class="tm-nav-link">
+                        <i class="fas fa-user"></i>
+                        My Profile
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% url 'categories' as categories_url %}
+                    <li class="tm-nav-item {% if request.path == categories_url %} active {% endif %}">
+                        <a href="{% url 'categories' %}" class="tm-nav-link">
+                            <i class="fas fa-list"></i>
+                            Categories
+                        </a>
+                    </li>
+                    {% if user.is_staff %}
+                    {% url 'comments' as comments_url %}
+                    <li class="tm-nav-item {% if request.path == comments_url %} active {% endif %}">
+                        <a href="{% url 'comments' %}" class="tm-nav-link">
+                            <i class="fas fa-comments"></i>
+                            Comments Management
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% url 'community' as community_url %}
+                    <li class="tm-nav-item {% if request.path == community_url %} active {% endif %}">
+                        <a href="{% url 'community' %}" class="tm-nav-link">
+                        <i class="fas fa-users"></i>
+                        Community
+                    </a></li>
+                    {% url 'admins' as admins_url %}
+                    <li class="tm-nav-item {% if request.path == admins_url %} active {% endif %}"><a href="{% url 'admins' %}" class="tm-nav-link">
+                        <i class="fas fa-crown"></i>
+                        Meet The Admins
+                    </a></li>
+                    {% url 'news' as news_url %}
+                    <li class="tm-nav-item{% if request.path == news_url %} active {% endif %}">
+                        <a href="{% url 'news' %}" class="tm-nav-link">
+                        <i class="fas fa-newspaper"></i>
+                        News & Info
+                    </a></li>
+                    {% url 'about' as about_url %}
+                    <li class="tm-nav-item{% if request.path == about_url %} active {% endif %}">
+                        <a href="{% url 'about' %}" class="tm-nav-link">
+                        <i class="fas fa-church"></i>
+                        About HopTeens
+                    </a></li>
+                </ul>
+            </nav>
+            <div class="tm-mb-65" >
+                {% show_social %}
+            </div>
+            
+        </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+    </header>
+
+    
+    <div class="container-fluid">
+
+        
+        <main class="tm-main">
+
+            <!----Search form---->
+            <div style="margin-bottom: 30px;">
+            {% if user.is_authenticated %}
+                <a class="btn btn-secondary" style="color: white;" href="{% url 'logout' %}?next={{request.path | urlencode}}">Logout</a>
+                {% show_notifications %}
+            {% else %}    
+                <a class="btn btn-secondary" href="{% url 'login' %}?next={{request.path | urlencode}}" style="color: white;">Login/SignUp</a>
+            {% endif %}
+            </div>
+            <div class="row tm-row">
+            
+
+
+            {% post_search %}
+            {% block content %}
+
+        
+
+            {% endblock %}  
+            <footer class="row tm-row">
+                <div class="card-group">
+                    <hr class="col-12">
+                    <div class="tm-color-gray des kay">
+                        Design: <a rel="nofollow" target="_blank" href="https://templatemo.com" class="tm-external-link">TemplateMo</a>
+                    </div>
+                    <div class="tm-color-gray mod kay">
+                        Modified: <a rel="nofollow" target="_blank" href="https://wa.me/2348095602320" class="tm-external-link">Kay Programmer</a>
+                    </div>
+                    <div class=" tm-color-gray tm-copyright kay">
+                        Copyright {% now "Y" %} HopTeens Blog.
+                    </div>
+                </div>
+            </footer>
+        </main>
+    </div>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>    
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
+    
+    <script>
+//---------------- Bootstrap Dropdown              
+        $('.dropdown').on('show.bs.dropdown', function(e) {   
+            $(this).find('.dropdown-menu').first().stop(true, true).fadeToggle(200); 
+        }); 
+
+            // Add fadeToggle animation to dropdown 
+        $('.dropdown').on('hide.bs.dropdown', function(e) { 
+            $(this).find('.dropdown-menu').first().stop(true, true).fadeToggle(200); 
+        });
+
+//-----------  NOTIFICATIONS JS CODE----------------------------
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function removeNotification(removeNotificationURL, redirectURL) {
+            const csrftoken = getCookie('csrftoken');
+            let xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+                    if (xmlhttp.status == 200) {
+                        window.location.replace(redirectURL);
+                    } else {
+                        alert('There was an error');
+                    }
+                }
+            };
+
+            xmlhttp.open("DELETE", removeNotificationURL, true);
+            xmlhttp.setRequestHeader("X-CSRFToken", csrftoken);
+            xmlhttp.send();
+        }
+
+        function removeAllNotification(removeAllNotificationURL, redirectURL) {
+            const csrftoken = getCookie('csrftoken');
+            let xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+                    if (xmlhttp.status == 200) {
+                        window.location.replace(redirectURL);
+                    } else {
+                        alert('There was an error');
+                    }
+                }
+            };
+
+            xmlhttp.open("DELETE", removeAllNotificationURL, true);
+            xmlhttp.setRequestHeader("X-CSRFToken", csrftoken);
+            xmlhttp.send();
+        }
+//----------------------------------------------------------------------------------------
+
+        function remove_hash_from_url(){
+            var url  = window.location.toString();
+            if (url.indexOf('#') > 0){
+                var clean_url = url.substring(0, url.indexOf("#"));
+                window.history.replaceState({}, document.title, clean_url)
+            }
+        }
+//----------------------------------------------------------------------------------------
+//--------------------------- SEARCH QUERY JS CODES--------------------------------------
+//---------------------------------------------------------------------------------------
+
+        $(document).on('keyup', '#id_q', function (e) {
+            e.preventDefault();
+    
+            var minlength = 1;
+            var results = [];
+    
+            if ($('#id_q').val().length >= minlength) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "post_search" %}',
+                    data: {
+                        ss: $('#id_q').val(),
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        action: 'post'
+                    },
+                    success: function (json) {
+    
+                        $.each(JSON.parse(json.search_string), function (i, item) {
+                            if(item.fields.body){
+
+                                results.push(
+                                    `
+                                    
+                                    <div class="ite">
+                                        <hr>
+                                        <li style="margin-top:1.5em; margin-bottom:1.5em; margin-right:0.5em;" class="cat-name" role="presentation"><a role="menuitem" tabindex="-1" href="\/${item.pk}/${item.fields.slug}">${item.fields.title}</a></li>
+                                        <hr>
+                                    </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+                                    `
+                                    )
+
+                            } else if (item.fields.text){
+
+                                results.push(
+                                    `
+                                    
+                                    <div class="ite">
+                                        <hr>
+                                        <li style="margin-top:1.5em; margin-bottom:1.5em; margin-right:0.5em;" class="cat-name" role="presentation"><a role="menuitem" tabindex="-1" href="\/questions/${item.pk}/${item.fields.slug}">${item.fields.title}</a></li>
+                                        <hr>
+                                    </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+                                    `
+                                    )
+
+                            } else {
+                                
+                                results.push(
+                                    `
+                                    
+                                    <div class="ite">
+                                        <hr>
+                                        <li style="margin-top:1.5em; margin-bottom:1.5em; margin-right:0.5em;" class="cat-name" role="presentation"><a role="menuitem" tabindex="-1" href="\/admin/${item.fields.slug}">${item.fields.full_name}</a></li>
+                                        <hr>
+                                    </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+                                    `
+                                    )
+
+                            }
+
+                        })
+    
+                        if (!$(".show")[0]) {
+                            $('.menudd').trigger('click')
+                        }
+                        
+                        document.getElementById("hd").innerHTML = "Query Results"
+                        document.getElementById("list").innerHTML = (!results.length) ?
+                            "<hr><div style='margin-top:1.5em; margin-bottom:1.5em; text-align:center; margin-left:0.5em; margin-right:0.5em; font-size:0.9em; line-height:15px;'>No results match your query</div><hr>" : results.join('');
+                    },
+                    error: function (xhr, errmsg, err) {}
+                });
+            }
+        })
+//------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------------------------
+//-----------------------------COMMENTS AND REPLY AJAX------------------------------------------
+//---------------------------------------------------------------------------------------------
+        $(document).ready(function(event){
+
+            var id = $('#replied-comments-{{com.id}}');
+            $(document).on('click', '.rep-btn', function() {
+                $(this).parent().parent().parent().parent().next(id).fadeToggle()
+                $('textarea').val('');
+                remove_hash_from_url()
+            });
+
+            $(document).on('submit', '.tm-comment-form', function(event){
+                event.preventDefault();
+                event.stopPropagation()
+                var id = $('#replied-comments-{{com.id}}');
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(response) {
+                        $('.main-comment-section').html(response['form']);
+                        $('textarea').val('');
+                        remove_hash_from_url()
+                        
+                    },
+                    error: function(rs, e) {
+                    },
+                });
+                return false
+            });
+
+            
+            $(document).on('submit', '.tm-reply-form', function(event){
+                event.preventDefault();
+                event.stopPropagation();
+                var id = $(this).parent().attr('id')
+                var id2 = $(this).parent().parent().prev().children('div').children('div .rep-tinzz').children('div .replies-btn').children('button').attr('id')
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(response) {
+                        $("#" +id).html(response['form2'])
+                        $('textarea').val('');
+                        $("#" +id2).html(response['form3'])
+                    },
+                    error: function(rs, e) {
+                    },
+                });
+                return false
+            });
+//------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------------------------
+//------------------------------ FLAG JS CODES ---------------------------------------------------
+//------------------------------------------------------------------------------------------------
+
+            $(document).on('submit', '.flag-forms', function(event){
+                event.preventDefault();
+                event.stopPropagation();
+                var btn_id = $(this).children('button').attr('id')
+
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(response) {
+                        if(response.flagged === false){
+                            $('#' + btn_id).html('<i style="color:red;" class="fas fa-flag"></i>')
+                        } else{
+                            $('#' + btn_id).html('<i class="far fa-flag"></i>')
+                        }
+                        remove_hash_from_url()                        
+                    },
+                    error: function(rs, e) {
+                    },
+                });
+                return false
+            });
+
+            $(document).on('submit', '.reply-flag-forms', function(event){
+                event.preventDefault();
+                event.stopPropagation();
+                var btn_id = $(this).children('button').attr('id')
+
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(response) {
+                        if(response.reply_flagged === false){
+                            $('#' + btn_id).html('<i style="color:red;" class="fas fa-flag"></i>')
+                        } else{
+                            $('#' + btn_id).html('<i class="far fa-flag"></i>')
+                        }
+                    },
+                    error: function(rs, e) {
+                    },
+                });
+                return false
+            });
+//------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
+
+            
+        });
+//------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------------------------
+//---------------------------- SEARCH FORM ------------------------------------------------------
+//------------------------------------------------------------------------------------------------
+
+        $('.tm-search-button').click(function(){
+            Swal.fire({
+                text: 'Inactive button. Please make do with the search dropdown. ',
+                toast: true,
+                timer : 4000,
+                showConfirmButton: false,
+                position: 'top'
+            });
+            remove_hash_from_url()
+
+        })
+//------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
+        
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            
+//------------------------------------------------------------------------------------------------
+//------------------------COMMENT EDIT REPLY AND DELETE MODALS ----------------------------------
+//------------------------------------------------------------------------------------------------
+            // Comment Edit And Delete
+            var loadCommentEditForm = function () {
+                var btn = $(this);
+                var mc = $(this).parent().parent().parent().parent().parent().prev('div').attr('id')
+                $.ajax({
+                    url: btn.attr("data-url"),
+                    type: 'get',
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $("#" + mc).children("div").children('div').html("");
+                        $("#" + mc).modal("show");
+                    },
+                    success: function (data) {
+
+                        $("#" + mc).children("div").children('div').html(data.html_form);
+                    }
+                });
+            };
+      
+            var saveCommentEditForm = function () {
+                var form = $(this);
+                var comment = $(this).parent().parent().parent().next().attr('id')
+                var mc2 = $(this).parent().parent().parent().attr('id')
+                $.ajax({
+                url: form.attr("action"),
+                data: form.serialize(),
+                type: form.attr("method"),
+                dataType: 'json',
+                success: function (data) {
+                    if (data.form_is_valid) {
+    
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Comment has been updated',
+                            button :'Ok',
+                            timer : 2500,
+                        });
+                        $("#" + comment).load(window.location.href + " #" + comment);
+                        $("#" + mc2).modal("hide");
+                        
+                    }
+
+                    else {
+                        $("#" + mc2).children("div").children('div').html(data.html_form);
+                    }
+                }
+                });
+                return false;
+            };
+
+            var loadCommentDeleteForm = function () {
+                var btn = $(this);
+                var mc3 = $(this).parent().parent().parent().parent().parent().prev('div').attr('id')
+                var mcc = $('.mc').attr('id')
+                $.ajax({
+                    url: btn.attr("data-url"),
+                    type: 'get',
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $("#" + mc3).children("div .modal-dialog").children('div').html("");
+                        $("#" + mc3).modal("show");
+                    },
+                    success: function (data) {
+
+                        $("#" + mc3).children("div").children('div').html(data.html_form);
+                    }
+                });
+            };
+
+            var CommentDeleteForm = function () {
+                var mc4 = $(this).parent().parent().parent().attr('id')
+                var form = $(this);
+                $.ajax({
+                url: form.attr("action"),
+                data: form.serialize(),
+                type: form.attr("method"),
+                dataType: 'json',
+                success: function (data) {
+                    data.preventDefault;
+                    if (data.form_is_valid) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Comment has been deleted',
+                        button :'Ok',
+                        timer : 2500
+                    })
+                    $('.main-comment-section').load(window.location.href + " .main-comment-section")
+                    $("#" + mc4).modal("hide");
+                    }
+        
+                    else {
+                        $("#" + mc4).children('div').children('div').html(data.html_form);
+                    }
+                }
+                });
+                return false;
+            };
+
+            $(document).on("click", ".js-edit-comment", loadCommentEditForm);
+            $(document, '.mc').on("submit", ".js-comment-edit-form", saveCommentEditForm);
+
+            $(document).on("click", ".js-delete-comment", loadCommentDeleteForm);
+            $(document, '.mc').on("submit", ".js-comment-delete-form", CommentDeleteForm);
+
+            // Reply Edit And Delete
+            var loadReplyEditForm = function () {
+                var btn = $(this);
+                var mr = $(this).parent().parent().parent().parent().parent().prev().prev('div').attr('id')
+                $.ajax({
+                    url: btn.attr("data-url"),
+                    type: 'get',
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $("#" + mr).children("div").children('div').html("");
+                        $("#" + mr).modal("show");
+                    },
+                    success: function (data) {
+
+                        $("#" + mr).children("div").children('div').html(data.html_form);
+                    }
+                });
+            };
+          
+            var SaveReplyEditForm = function () {
+                var form = $(this);
+                var replies = $(this).parent().parent().parent().next().next('div .tm-comment-reply').children('div').children('div').attr('id')
+                var mr2 = $(this).parent().parent().parent().attr('id')
+                $.ajax({
+                url: form.attr("action"),
+                data: form.serialize(),
+                type: form.attr("method"),
+                dataType: 'json',
+                success: function (data) {
+                    if (data.form_is_valid) {
+    
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Reply has been updated',
+                            button :'Ok',
+                            timer : 2500,
+                        });
+                        
+                        $("#" + replies).load(window.location.href + " #" + replies);
+                        $("#" + mr2).modal("hide");
+                        
+                        
+                    }
+
+                    else {
+                        $("#" + mr2).children("div").children('div').html(data.html_form);
+                    }
+                }
+                });
+                return false;
+            };
+            /*
+            var loadReplyDeleteForm = function () {
+                var btn = $(this);
+                var mr3 = $(this).parent().parent().parent().parent().parent().prev().attr('id')
+                $.ajax({
+                    url: btn.attr("data-url"),
+                    type: 'get',
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $("#" + mr3).children("div .modal-dialog").children('div').html("");
+                        $("#" + mr3).modal("show");
+                    },
+                    success: function (data) {
+
+                        $("#" + mr3).children("div").children('div').html(data.html_form);
+                    }
+                });
+            };
+            */
+            var ReplyDeleteForm = function () {
+                var mr4 = $(this).parent().parent().parent().attr('id')
+                var replies = $(this).parent().parent().parent().next('div .tm-comment-reply').attr('id')
+                var rep_btn = $(this).parent().parent().parent().parent().parent().prev('div .tm-comment').children('div .dis-cou').children('div .reppll').children('div .b-tinzz').children('button').attr('id')
+                var form = $(this);
+                $.ajax({
+                url: form.attr("action"),
+                data: form.serialize(),
+                type: form.attr("method"),
+                dataType: 'json',
+                success: function (data) {
+                    data.preventDefault;
+                    if (data.form_is_valid) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Reply has been deleted',
+                        button :'Ok',
+                        timer : 2500
+                    })
+                    $('#' + replies).load(window.location.href + " #" + replies)
+                    $('#' + rep_btn).html(data.reply_total);
+                    $("#" + mr4).modal("hide");
+                    }
+        
+                    else {
+                        $("#" + mr4).children('div').children('div').html(data.html_form);
+                    }
+                }
+                });
+                return false;
+            };
+
+            $(document).on("click", ".js-edit-reply", loadReplyEditForm);
+            $(document).on("submit", ".js-reply-edit-form", SaveReplyEditForm);
+
+            /*$(document).on("click", ".js-delete-reply", loadReplyDeleteForm);*/
+            $(document).on("submit", ".js-reply-delete-form", ReplyDeleteForm);
+        })
+        
+    </script>
+
+    {% block javascript %}{% endblock javascript %}
+
+{% load sweetify %}
+{% sweetify %}
+
+</body>
+</html>

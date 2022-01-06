@@ -1,0 +1,70 @@
+{% load static %}
+<!--
+Author: Colorlib
+Author URL: https://colorlib.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>HopTeens Blog | Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link href="{% static 'css/log.css' %}" rel="stylesheet" type="text/css" media="all" />
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<!-- //Custom Theme files -->
+<!-- web font -->
+<link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css">
+<!-- //web font -->
+</head>
+<body>
+	<!-- main -->
+	<div class="main-w3layouts wrapper">
+		<h1 style="font-weight: bold;">LOGIN</h1>
+		<div class="main-agileinfo">
+			<div class="agileits-top">
+				<form action="" method="post">
+					{% csrf_token %}
+					<input class="text email" type="email" name="email" placeholder="Email Address" required="">
+					
+					<input class="text w3lpass" type="password" name="password" placeholder="Password" required="">
+					<div class="wthree-text">
+						<div class="clear"> </div>
+					</div>
+					<input type="submit" value="LOGIN">
+					<input type="hidden" name="next" value="{{ request.REQUEST.next}}"/>
+				</form>
+				<p>Forgot Password? <a href="{% url 'reset_password' %}"> Reset Password!</a></p>
+				<p style="margin-top: 1em;">Don't have an Account? <a href="{% url 'register' %}"> Sign Up!</a></p>
+			</div>
+		</div>
+		<!-- copyright -->
+		<div class="colorlibcopy-agile">
+			<p>© {% now "Y" %} HopTeens Blog. All rights reserved | Design by <a href="https://colorlib.com/" target="_blank">Colorlib</a></p>
+		</div>
+		<!-- //copyright -->
+		<ul class="colorlib-bubbles">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<!-- //main -->
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
+
+	{% load sweetify %}
+	{% sweetify %}
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% for a in about %}
+
+<a rel="nofollow" href="{{a.facebook|default:'#'}}" class="tm-social-link" target="_blank">
+    <i class="fab fa-facebook tm-social-icon" style="color: green;"></i>
+</a>
+<a href="{{a.twitter|default:'#'}}" class="tm-social-link" target="_blank">
+    <i class="fab fa-twitter tm-social-icon"  style="color: green;"></i>
+</a>
+<a href="{{a.instagram|default:'#'}}" class="tm-social-link" target="_blank">
+    <i class="fab fa-instagram tm-social-icon"  style="color: green;"></i>
+</a>
+<a href="{{a.linkedin|default:'#'}}" class="tm-social-link" target="_blank">
+    <i class="fab fa-linkedin tm-social-icon"  style="color: green;"></i>
+</a>
+
+{% endfor %}

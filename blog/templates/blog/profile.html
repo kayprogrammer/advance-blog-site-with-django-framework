@@ -1,0 +1,31 @@
+{% extends 'blog/index.html' %}
+
+{% load static %}
+{% block title %} | Profile{% endblock %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/profile.css' %}?{% now "U" %}">
+<button class="btn btn-secondary btn-sm js-update-profile" id="edit-btn" type="button" data-url="{% url 'update-profile' author.id %}">Edit Profile</button>
+<div id="profile">
+    {% include 'blog/profile_list.html' %}
+</div>
+
+<div class="modal fade" id="modal-profile">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"></div>
+    </div>
+</div>
+<br>
+
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="{% static 'js/profile.js' %}"></script>    
+    <script>
+        $('.profile-avatar').click(function(){
+            Swal.fire({
+                imageUrl:"{{author.avatarURL}}",
+            });
+        })
+    </script>
+{% endblock javascript %}

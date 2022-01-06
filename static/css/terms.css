@@ -1,0 +1,59 @@
+body{
+    font: 15px/1.5 Arial, Helvetica,sans-serif;
+    padding:0;
+    margin:0;
+    background-color:#f4f4f4;
+  }
+  
+  /* Global */
+  .container{
+    width:80%;
+    margin:auto;
+    overflow:hidden;
+  }
+  
+  .page-title{
+      font-size: 30px;
+      text-align: center;
+  }
+
+  ul{
+    margin:0;
+    padding:0;
+  }
+  
+  article#main-col{
+    float:left;
+    width:100%;
+  }
+  
+  /* Services */
+  ul#services li{
+    list-style: none;
+    padding:20px;
+    border: #cccccc solid 1px;
+    margin-bottom:5px;
+    background:#e6e6e6;
+  }
+  
+  footer{
+    padding:20px;
+    margin-top:20px;
+    color:#ffffff;
+    background-color: #76b852;
+    text-align: center;
+  }
+  
+  /* Media Queries */
+  @media(max-width: 768px){
+    article#main-col{
+      float:none;
+      text-align:center;
+      width:100%;
+    }
+  
+    #showcase h1{
+      margin-top:40px;
+    }
+  }
+  

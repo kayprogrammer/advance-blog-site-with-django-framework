@@ -1,0 +1,87 @@
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load static %}
+    <!-- Main CSS-->
+    <link href="{% static 'css/form.css' %}?{% now "U" %}" rel="stylesheet" media="all">
+
+
+    <div class="card-body">
+        <div class="form-row">
+            <div class="name">Title</div>
+            <div class="value">
+                {% render_field form.title class+="input--style-6" placeholder="Enter your article title..." %}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="name">Text</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.body}}
+                    {{form.media}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Category</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.category|as_crispy_field}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row post-form-img">
+            <div class="name">Choose image</div>
+            <div class="value">
+                <div class="input-group js-input-file">
+                    {{form.image}}
+                    {{form.image.errors}}
+
+                    <label class="label--file lab1" for="file">Choose image</label>
+                    <span class="input-file__info">No image chosen</span>
+                </div>
+                <div class="label--desc">Upload an image to support your article. 2mb max-width</div>
+            </div>
+        </div>
+        <div class="form-row post-form-vid">
+            <div class="name">Choose video</div>
+            <div class="value">
+                <div class="input-group js-input-file">
+                    {{form.video}}
+                    {{form.video.errors}}
+
+                    <label class="label--file lab2" for="file2">Choose video</label>
+                    <span class="input-file__info">No video chosen</span>
+                </div>
+                <div class="label--desc">Upload a video to support your article. 5mb max-width</div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var url = "{% static 'js/form.js' %}"
+        $.getScript(url);
+
+        lab1 = $('.lab1');
+        lab2 = $('.lab2');
+
+        lab1.click(function(){
+            $('.post-form-vid').hide()
+        })
+
+        lab2.click(function(){
+            $('.post-form-img').hide()
+        })
+    </script>
+    <!--
+    <script type="text/javascript">
+        var url = "{% static 'ckeditor/ckeditor-init.js' %}"
+        $.getScript(url);
+       
+    </script>
+    <script type="text/javascript">
+        var url = "{% static 'ckeditor/ckeditor/ckeditor.js' %}"
+        $.getScript(url);
+       
+    </script>
+    -->

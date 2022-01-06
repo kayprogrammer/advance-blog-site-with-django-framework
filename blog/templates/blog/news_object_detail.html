@@ -1,0 +1,10 @@
+{% if n_obj.author.user == user %}
+    <button style="padding-right:1em; padding-left:1em ;" class="btn btn-info btn-sm js-update-news" data-url="{% url 'update_news' n_obj.id %}" type="button">Edit</button>
+    <button class="btn btn-danger btn-sm js-delete-news" data-url="{% url 'delete_news' n_obj.id %}" type="button">Delete</button>
+{% endif %}
+<h2 class="pt-2 tm-color-primary tm-post-title">{{n_obj.title}}</h2>
+<p style="line-height: 1.5em;" class="{% if n_obj.date_created == n_obj.modified %}tm-mb-40{% endif %} mb-0">{{n_obj.date_created}} posted by {{n_obj.author|default_if_none:"Inactive User"}}</p>
+{% if not n_obj.date_created == n_obj.modified %}
+    <p class="tm-mb-40">Edited... <small>{{n_obj.whenmodified}}</small></p>
+{% endif %}
+<p style="line-height: 1.5em;">{{n_obj.text|safe}}</p>
