@@ -471,6 +471,9 @@ https://templatemo.com/tm-553-xtra-blog
                 data: form.serialize(),
                 type: form.attr("method"),
                 dataType: 'json',
+		beforeSend: function(){
+		    $('.clearfix').show()
+	  	},
                 success: function (data) {
                     if (data.form_is_valid) {
     
@@ -521,6 +524,9 @@ https://templatemo.com/tm-553-xtra-blog
                 data: form.serialize(),
                 type: form.attr("method"),
                 dataType: 'json',
+		beforeSend: function(){
+		    $('.clearfix').show()
+	  	},
                 success: function (data) {
                     data.preventDefault;
                     if (data.form_is_valid) {
@@ -577,6 +583,9 @@ https://templatemo.com/tm-553-xtra-blog
                 data: form.serialize(),
                 type: form.attr("method"),
                 dataType: 'json',
+		beforeSend: function(){
+		    $('.clearfix').show()
+	  	},
                 success: function (data) {
                     if (data.form_is_valid) {
     
@@ -630,6 +639,9 @@ https://templatemo.com/tm-553-xtra-blog
                 data: form.serialize(),
                 type: form.attr("method"),
                 dataType: 'json',
+		beforeSend: function(){
+		    $('.clearfix').show()
+	  	},
                 success: function (data) {
                     data.preventDefault;
                     if (data.form_is_valid) {
