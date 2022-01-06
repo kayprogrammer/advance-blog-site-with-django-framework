@@ -17,7 +17,7 @@ from ckeditor.fields import RichTextField
 
 from autoslug import AutoSlugField
 from . utils import unique_slug_generator, unique_slug_generator2, unique_slug_generator3
-from . validators import avatar_size, media_size, validate_is_pic
+from . validators import avatar_size, media_size
 from mimetypes import guess_type
 import mimetypes
 import os
