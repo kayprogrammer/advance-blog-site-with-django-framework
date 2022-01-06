@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '*ijn)dq3i5k!zprm^^fc9ug(^2&bf5sxatnn$*!&0ot_@ktof@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['hopteensblog.herokuapp.com', '127.0.0.1']
 AUTH_USER_MODEL = 'blog.User'
