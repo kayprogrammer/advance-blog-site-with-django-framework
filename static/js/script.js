@@ -64,7 +64,10 @@ $(document).ready(function() {
           enctype: 'multipart/form-data',
           contentType:false,
           processData: false,
-          cache: false,
+          cache: false, 
+          beforeSend: function(){
+            $('.clearfix').show()
+          },
           success: function (data) {
             if (data.form_is_valid) {
               Swal.fire({
@@ -99,6 +102,9 @@ $(document).ready(function() {
           contentType:false,
           processData: false,
           cache: false,
+          beforeSend: function(){
+            $('.clearfix').show()
+          },
           success: function (data) {
             if (data.form_is_valid) {
               Swal.fire({
@@ -133,6 +139,9 @@ $(document).ready(function() {
         processData: false,
         contentType: false,
         cache: false,
+        beforeSend: function(){
+          $('.clearfix').show()
+        },
         success: function (data) {
           if (data.form_is_valid) {
             Swal.fire({
@@ -167,6 +176,9 @@ $(document).ready(function() {
         processData: false,
         contentType: false,
         cache: false,
+        beforeSend: function(){
+          $('.clearfix').show()
+        },
         success: function (data) {
           if (data.form_is_valid) {
             Swal.fire({
@@ -201,6 +213,9 @@ $(document).ready(function() {
         processData: false,
         contentType: false,
         cache: false,
+        beforeSend: function(){
+          $('.clearfix').show()
+        },
         success: function (data) {
           if (data.form_is_valid) {
             Swal.fire({
@@ -229,6 +244,9 @@ $(document).ready(function() {
         data: form.serialize(),
         type: form.attr("method"),
         dataType: 'json',
+        beforeSend: function(){
+          $('.clearfix').show()
+        },
         success: function (data) {
           data.preventDefault;
           if (data.form_is_valid) {
