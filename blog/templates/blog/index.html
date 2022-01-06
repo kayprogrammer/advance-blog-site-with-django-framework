@@ -103,7 +103,11 @@ https://templatemo.com/tm-553-xtra-blog
             <!----Search form---->
             <div style="margin-bottom: 30px;">
             {% if user.is_authenticated %}
+	    	{% if not request.path == "profile" user.author.slug %}
                 <a class="btn btn-secondary" style="color: white;" href="{% url 'logout' %}?next={{request.path | urlencode}}">Logout</a>
+	    	{% else %}
+	    	<a class="btn btn-secondary" style="color: white;" href="{% url 'logout' %}">Logout</a>
+	    	{% endif %}
                 {% show_notifications %}
             {% else %}    
                 <a class="btn btn-secondary" href="{% url 'login' %}?next={{request.path | urlencode}}" style="color: white;">Login/SignUp</a>
