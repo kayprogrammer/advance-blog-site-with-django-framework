@@ -1,29 +1,7 @@
 import os
-import magic
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.utils.translation import ugettext as _
-
-def validate_is_media(file):
-    valid_mime_types = ['video/mp4', 'image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'video/3gp']
-    file_mime_type = magic.from_buffer(file.read(1024), mime=True)
-    if file_mime_type not in valid_mime_types:
-        raise ValidationError('Unsupported file type.')
-    valid_file_extensions = ['.mp4', '.jpg', '.png', '.gif']
-    ext = os.path.splitext(file.name)[1]
-    if ext.lower() not in valid_file_extensions:
-        raise ValidationError('Unacceptable file extension.')
-
-def validate_is_pic(file):
-    valid_mime_types = ['image/jpeg', 'image/jpeg', 'image/png', 'image/gif']
-    file_mime_type = magic.from_buffer(file.read(1024), mime=True)
-    if file_mime_type not in valid_mime_types:
-        raise ValidationError('Unsupported file type.')
-    valid_file_extensions = ['.jpg', '.jpeg', '.png', '.gif']
-    ext = os.path.splitext(file.name)[1]
-    if ext.lower() not in valid_file_extensions:
-        raise ValidationError('Unacceptable file extension.')       
-
 
 full_regex_pattern = RegexValidator(regex=r'^[a-zA-Z]+\s[a-zA-Z]*$', message='Please input only two names without digits or special characters.',)
 
