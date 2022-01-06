@@ -103,7 +103,8 @@ https://templatemo.com/tm-553-xtra-blog
             <!----Search form---->
             <div style="margin-bottom: 30px;">
             {% if user.is_authenticated %}
-	    	{% if not request.path == "profile" user.author.slug %}
+	    	{% url "profile" user.author.slug as individualprofile_url %}
+	    	{% if not request.path == individualprofile_url %}
                 <a class="btn btn-secondary" style="color: white;" href="{% url 'logout' %}?next={{request.path | urlencode}}">Logout</a>
 	    	{% else %}
 	    	<a class="btn btn-secondary" style="color: white;" href="{% url 'logout' %}">Logout</a>
