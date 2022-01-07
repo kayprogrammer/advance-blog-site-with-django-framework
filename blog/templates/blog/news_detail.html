@@ -81,7 +81,7 @@
                                 <source src="{{o.video.url}}" type="video/mp4">
                             </video>
                             {% else %}
-                            <img src="{% static 'media/lll.gif' %}" alt="Image" class="mb-3 img-fluid" height="75%">
+                            <img src="{% static 'media/lll.gif' %}" alt="Image" class="mb-3 img-fluid" style="max-height: 200px; width: 100%; object-fit: cover; object-position: top;">
                             {% endif %}
                         {% endif %}
                         <figcaption class="tm-color-primary">{{o.title}}</figcaption>
