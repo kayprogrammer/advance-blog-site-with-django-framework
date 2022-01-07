@@ -89,7 +89,7 @@
                 <a href="{{r.get_absolute_url}}" class="d-block tm-mb-40">
                     <figure>
                         {% if r.image.url != None %}
-                        <img src="{{r.image.url}}" alt="Image" class="mb-3 img-fluid" height="75%">
+                        <img src="{{r.image.url}}" alt="Image" class="mb-3 img-fluid" style="max-height: 200px; width: 100%; object-fit: cover; object-position: top;">
                         {% else %}
                             {% if r.video.url != None %}
                             <video controls class="mb-3 img-fluid">
