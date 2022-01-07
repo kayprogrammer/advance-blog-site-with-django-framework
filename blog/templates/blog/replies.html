@@ -117,6 +117,7 @@
         {% else %}
         <div class="mb-4">
             {{form2.name}}
+            <p style="font-size: 13px; width: 260px; line-height: 12px; color: red;">{{form2.name.errors|striptags}}</p>
         </div>
         <div class="mb-4">
             {{form2.email}}
@@ -129,7 +130,6 @@
         <div class="text-right">
             <button type="submit" id="btn2-{{forloop.counter}}" style="font-size: 1em;" class="tm-btn tm-btn-primary tm-btn-small btn2">Submit</button>
         </div>
-        {{form2.errors}}
     </form> 
 
     <!---
