@@ -119,6 +119,7 @@
     {% else %}
     <div class="mb-4">
         {{form.name}}
+        <p style="font-size: 13px; line-height: 15px; color: red;">{{form.name.errors|striptags}}</p>
     </div>
     <div class="mb-4">
         {{form.email}}
@@ -131,5 +132,4 @@
     <div class="text-right">
         <button type="submit" class="tm-btn tm-btn-primary tm-btn-small ">Submit</button>
     </div>
-    {{form.errors}}
 </form>
