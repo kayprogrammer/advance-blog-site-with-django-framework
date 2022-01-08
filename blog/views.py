@@ -663,7 +663,7 @@ def deletePost(request, pk):
 #------------------------------------------------------------------------------------------------
 # COMMUNITY SECTION
 #------------------------------------------------------------------------------------------------
-question_object = 1
+#question_object = 1
 class QuestionListView(ListView):
     model = Question
     template_name = 'blog/community.html'
@@ -673,7 +673,7 @@ class QuestionListView(ListView):
 
 class QuestionDetailView(View):
     def get(self, request, question_pk, question_slug, *args, **kwargs):
-        global question_object
+ #       global question_object
         question_object = Question.objects.get(id=question_pk, slug=question_slug)
         answers = question_object.question_comments.all()
         categories = Category.objects.all()
@@ -828,8 +828,8 @@ def save_question_form(request, form, template_name):
             
             if path_name == 'update_question':
 
-                id = question_object.id
-                question = Question.objects.get(id=id)
+  #              id = question_object.id
+                question = Question.objects.get(id=form.instance.pk)
                 print(question)
 
                 data['html_question_detail'] = render_to_string('blog/partial_question_detail.html', {
@@ -979,7 +979,7 @@ class ReplyAnswerFlagQuestionNotification(LoginRequiredMixin, View):
 # NEWS AND INFO
 #------------------------------------------------------------------------------------------------
 from django.db import transaction
-news_object = 2
+#news_object = 2
 class NewsListView(ListView):
     model = News
     template_name = 'blog/news.html'
@@ -989,7 +989,7 @@ class NewsListView(ListView):
 
 class NewsDetailView(View):
     def get(self, request, news_slug, *args, **kwargs):
-        global news_object
+ #       global news_object
         news_object = News.objects.get(slug=news_slug)
         comments = news_object.news_comments.all()
         other_news = News.objects.all().exclude(id=news_object.id).order_by('-date_created')[:5]
@@ -1137,8 +1137,8 @@ def save_news_form(request, form, template_name, ):
             
             if path_name == 'update_news':
 
-                id = news_object.id
-                news_obj = News.objects.get(id=id)
+  #              id = news_object.id
+                news_obj = News.objects.get(id=form.instance.pk)
                 print(news_obj)
                 data['n_obj_list'] = render_to_string('blog/news_object_detail.html', {
                     'n_obj': news_obj, 'user':user
