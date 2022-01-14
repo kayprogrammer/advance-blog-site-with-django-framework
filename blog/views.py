@@ -20,8 +20,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from . decorators import unauthenticated_user, allowed_users, admin_only
 from . models import *
-from . forms import *
-from . forms import PostForm, RegisterForm
+from . forms import PostForm, RegisterForm, NewsForm, QuestionForm, CommentForm, ReplyForm, ProfileForm, PostSearchForm, ContactForm 
+
 from . utils import generate_token
 from itertools import chain
 import sweetify
