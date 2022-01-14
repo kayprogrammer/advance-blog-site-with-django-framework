@@ -712,7 +712,7 @@ class QuestionDetailView(View):
                     
                         author = Author.objects.get(user=request.user)
                         content = request.POST.get('comment')
-                        answer=Comment.objects.create(question=question_object, author=author, comment=content)
+                        answer=Comment.objects.create(question=question, author=author, comment=content)
                         answer.save()
                         form = CommentForm(user, auto_id = False)
 
@@ -720,7 +720,7 @@ class QuestionDetailView(View):
                         name = request.POST.get('name')
                         email = request.POST.get('email')
                         content = request.POST.get('comment')
-                        answer=Comment.objects.create(question=question_object, name=name, email=email, comment=content)
+                        answer=Comment.objects.create(question=question, name=name, email=email, comment=content)
                         answer.save()
                         form = CommentForm(user, auto_id = False)
 
@@ -1030,7 +1030,7 @@ class NewsDetailView(View):
                         comment.save()
                         form = CommentForm(user, auto_id = False)
 
-        comments = news_object.news_comments.all()
+        comments = news_obj.news_comments.all()
 
         if request.user.is_authenticated:
             if not request.POST.get('reply'):
