@@ -1174,42 +1174,6 @@ video{
 
 }
 
-@media(max-width:575px){
-
-
-    .mod{
-        text-align: right;
-        position: relative;
-        top: -2em;
-        margin-bottom: 0;
-        
-    }
-
-    .tm-copyright{
-        position: relative;
-        top: -2em;
-    }
-}
-
-@media(max-width:375px){
-
-    .des{
-        margin-bottom: 8px;
-    }
-
-    .mod{
-        position: relative;
-        text-align: left;
-        top:-1em;
-        margin-bottom: 8px;
-    }
-
-    .tm-copyright{
-        position: relative;
-        
-    }
-}
-
 .js-update-question{
     width: 60px;
 }
